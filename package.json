@@ -1,0 +1,32 @@
+{
+  "name": "web-template-generator",
+  "version": "0.0.1",
+  "description": "Generator for web sites based on standard templates",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web",
+    "site",
+    "generator",
+    "web",
+    "site",
+    "templates"
+  ],
+  "author": "People & Code",
+  "license": "ISC",
+  "dependencies": {
+    "@inquirer/prompts": "^7.0.0",
+    "fs-extra": "^11.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.13.0",
+    "prettier": "^3.3.3",
+    "stylelint": "^16.10.0",
+    "stylelint-config-standard": "^36.0.1"
+  },
+  "bin": {
+    "create-web-project": "./cli.js"
+  },
+  "type": "module"
+}
