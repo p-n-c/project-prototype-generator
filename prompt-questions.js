@@ -5,6 +5,7 @@ export const promptQuestions = async (input, select) => {
     choices: [
       { name: 'Web basic', value: 'web' },
       { name: 'Web article', value: 'web-article' },
+      { name: 'People & Code website', value: 'web-people-and-code' },
     ],
     default: 'web',
   })

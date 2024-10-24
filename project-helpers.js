@@ -59,3 +59,33 @@ export const webArticle = (projectTitle, projectDescription) => {
   </body>
   </html>`
 }
+
+export const peopleAndCode = (projectTitle, projectDescription) => {
+  return `<!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="${projectDescription}" />
+        <link rel="stylesheet" href="/src/style.css" />
+        <title>${projectTitle}</title>
+      </head>
+      <body class="body">
+        <header>
+          <p>
+            <a href="#main" tabindex="0" class="local"
+              >Jump link to the main content</a
+            >
+          </p>
+          <h1>Welcome</h1>
+        </header>
+        <main id="main" class="main"></main>
+        <footer id="footer">
+          <nav aria-label="Primary">
+            <a href="/src/sitemap.html" class="local">Human-readable sitemap</a>
+          </nav>
+        </footer>
+      </body>
+    </html>
+`
+}

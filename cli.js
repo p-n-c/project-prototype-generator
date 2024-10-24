@@ -36,12 +36,6 @@ async function generateProject({
     console.log('Initialising git repository...')
     await exec('git init', { cwd: projectPath })
 
-    // Add git .ignore file
-    await fs.writeFile(
-      path.join(projectPath, '.gitignore'),
-      'node_modules\nchrome-extension.zip\n'
-    )
-
     // Initialise npm package
     const packageJson = {
       name: projectName,
@@ -51,11 +45,15 @@ async function generateProject({
       type: 'module',
       scripts: {
         lint: "eslint . && prettier --check . && stylelint '**/*.{css,scss}'",
+        static: 'cp src/robots.txt dist/robots.txt',
+        start: 'parcel && npm run static',
       },
+      source: ['./src/index.html'],
       devDependencies: {
         eslint: 'latest',
         prettier: 'latest',
         stylelint: 'latest',
+        parcel: 'latest',
         'stylelint-config-standard': 'latest',
       },
     }
@@ -82,8 +80,8 @@ async function generateProject({
 
     // Copy .vscode files
     await fs.copy(
-      path.join(__dirname, '.vscode', 'settings.json'),
-      path.join(projectPath, '.vscode/settings.json')
+      path.join(__dirname, 'people-and-code', '.vscode'),
+      path.join(projectPath, '.vscode')
     )
 
     // Create README.md
