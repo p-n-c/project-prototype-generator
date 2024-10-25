@@ -1,4 +1,4 @@
-# Project Template Generator
+# Web Project Generator
 
 ## Create new projects from the CLI
 
