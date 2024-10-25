@@ -4,7 +4,7 @@
 
 To run the generator, you must download it.
 
-From the terminal cd into the `web-template-generator` directory and run:
+From the terminal cd into the `web-project-generator` directory and run:
 
 ```bash
 npm link
