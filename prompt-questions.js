@@ -32,7 +32,7 @@ export const promptQuestions = async (input, select) => {
 
   return {
     projectType,
-    projectName,
+    projectName: projectName.replace(' ', '-'),
     projectTitle,
     projectDescription,
     projectAuthor,
