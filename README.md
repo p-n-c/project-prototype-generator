@@ -15,7 +15,7 @@ This will give you global access to the generator.
 Now go to the root directory where the project will be created:
 
 ```bash
-create-project
+create-web-project
 ```
 
 This will run the generator (provide inputs as required).
