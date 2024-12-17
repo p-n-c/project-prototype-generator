@@ -1,34 +1,47 @@
 # Web Project Generator
 
-## Create new projects from the CLI
+A tool for creating simple websites quickly from [People and Code](https://people-and-code.com/).
 
-To run the generator, you must download it.
+## Set up the project generator
 
-From the terminal cd into the `web-project-generator` directory and run:
+To run the generator, clone it.
+
+Open a terminal window in the `web-project-generator` directory and run `npm link`.
+
+This will give you global access to the web project generator.
+
+## Generate a new web project
+
+Open a terminal and navigate to where you want to locate your project.
+
+Type `create-web-project` and follow the instructions. There are 3 options:
+
+- Web basic
+  - eslint
+  - prettier
+  - stylelint
+  - parcel
+- Web article
+  - as basic plus a three column page layout
+- People & Code website
+  - as basic plus robots.txt, a sitemap and css
+
+You will most likely want to select "Web basic". The generator will then set up a new web site. This will take a minute or two.
 
 ```bash
-npm link
+Initialising git repository...
+Project files have been set up successfully.
+Installing dependencies..
 ```
-
-This will give you global access to the generator.
-
-Now go to the root directory where the project will be created:
-
-```bash
-create-web-project
-```
-
-This will run the generator (provide inputs as required).
 
 Once the project has been built, you will be prompted to run commands to install dependencies and run linters.
 
-To open in VS Code:
+To open your new project in VS Code type, `code .`
 
-```bash
-code .
-```
+---
 
-[To add the new repo to GitHub using Git](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github)
+## Saving your new project in GitHub
 
-- Create the new repo
-- Follow instructions (copy and paste code suggested in GitHub)
+[Adding locally hosted code to GitHub](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github)
+
+Follow the instructions (copy and paste code suggested in GitHub).
