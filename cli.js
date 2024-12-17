@@ -33,7 +33,7 @@ async function generateProject({
     await fs.mkdir(projectPath)
 
     // Initialise git repository
-    console.log('Initialising git repository...')
+    console.log('\nInitialising git repository...')
     await exec('git init', { cwd: projectPath })
 
     // Initialise npm package
@@ -98,21 +98,19 @@ async function generateProject({
       srcFolder,
     })
 
-    console.log('Project files have been set up successfully.')
+    console.log('Gathering project files...')
 
-    // Install dependencies
+    // Install project dependencies and update the project owner
     console.log('Installing dependencies...')
     const { stdout } = await exec('npm install', { cwd: projectPath })
     console.log(stdout)
-    console.log(`Dependencies installed successfully in ${projectPath}`)
+    console.log(
+      `The project dependencies for "${projectName}" have been installed.`
+    )
 
-    // Give instructions to complete setup
-    console.log(`
-      Project "${projectName}" has been created successfully!
-      To get started, run the following commands to install dependencies and run linters:
-      
-      cd ${projectName} && npm install && npm run lint
-      `)
+    // Display instructions to complete project setup
+    console.log('To get started, run the following commands:')
+    console.log(`\ncd ${projectName} && npm run lint\n`)
   } catch (error) {
     console.error(`An error occurred: ${error.message}`)
     process.exit(1)

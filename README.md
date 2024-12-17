@@ -14,7 +14,7 @@ This will give you global access to the web project generator.
 
 Open a terminal and navigate to where you want to locate your project.
 
-Type `create-web-project` and follow the instructions. There are 3 options:
+Type `create-web-project` and follow the instructions. There are 3 types of site available:
 
 - Web basic
   - eslint
@@ -22,21 +22,22 @@ Type `create-web-project` and follow the instructions. There are 3 options:
   - stylelint
   - parcel
 - Web article
-  - as basic plus a three column page layout
+  - as basic plus a three column page layout in css
 - People & Code website
-  - as basic plus robots.txt, a sitemap and css
+  - as basic plus robots.txt file, a sitemap and css
 
-You will most likely want to select "Web basic". The generator will then set up a new web site. This will take a minute or two.
+You will most likely want to select "Web basic".  
+The generator will take you through a series of straightforward questions before creating the new web site.
 
 ```bash
 Initialising git repository...
-Project files have been set up successfully.
-Installing dependencies..
+Gathering project files...
+Installing dependencies...
 ```
 
-Once the project has been built, you will be prompted to run commands to install dependencies and run linters.
+Once the project has been built, you will be prompted to run commands to enter the project and run the linters.
 
-To open your new project in VS Code type, `code .`
+If you have set this up, you can open your new project in VS Code using the `code .` shortcut.
 
 ---
 
