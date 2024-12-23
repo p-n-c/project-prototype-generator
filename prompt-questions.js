@@ -4,6 +4,7 @@ export const promptQuestions = async (input, select) => {
     message: 'Project type:',
     choices: [
       { name: 'Web basic', value: 'web' },
+      { name: 'Web next', value: 'web-next' },
       { name: 'Web article', value: 'web-article' },
       { name: 'People & Code website', value: 'web-people-and-code' },
     ],

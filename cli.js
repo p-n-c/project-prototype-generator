@@ -36,8 +36,28 @@ async function generateProject({
     console.log('\nInitialising git repository...')
     await exec('git init', { cwd: projectPath })
 
+    let devDependencies = {
+      eslint: 'latest',
+      prettier: 'latest',
+      stylelint: 'latest',
+      parcel: 'latest',
+      'stylelint-config-standard': 'latest',
+    }
+
+    switch (projectType) {
+      case 'web-next':
+        devDependencies = {
+          ...devDependencies,
+          next: 'latest',
+          react: 'latest',
+          'react-dom': 'latest',
+          '@next/eslint-plugin-next': 'latest',
+        }
+        break
+    }
+
     // Initialise npm package
-    const packageJson = {
+    let packageJson = {
       name: projectName,
       version: '0.0.1',
       description: projectDescription,
@@ -45,30 +65,47 @@ async function generateProject({
       type: 'module',
       scripts: {
         lint: "eslint . && prettier --check . && stylelint '**/*.{css,scss}'",
-        static: 'cp src/robots.txt dist/robots.txt',
         start: 'parcel && npm run static',
       },
       source: ['./src/index.html'],
-      devDependencies: {
-        eslint: 'latest',
-        prettier: 'latest',
-        stylelint: 'latest',
-        parcel: 'latest',
-        'stylelint-config-standard': 'latest',
-      },
+      devDependencies,
     }
+
+    switch (projectType) {
+      case 'web-next':
+        packageJson = {
+          ...packageJson,
+          scripts: {
+            ...packageJson.scripts,
+            dev: 'next dev',
+            build: 'next build',
+            start: 'next start',
+            lint: 'next lint',
+          },
+          source: ['./app/page.js'],
+        }
+        break
+      case 'web-people-and-code':
+        packageJson.scripts = {
+          ...packageJson.scripts,
+          static: 'cp src/robots.txt dist/robots.txt',
+        }
+    }
+
     await fs.writeJson(path.join(projectPath, 'package.json'), packageJson, {
       spaces: 2,
     })
 
-    // Create src folder
-    await fs.mkdir(path.join(projectPath, srcFolder))
+    switch (projectType) {
+      case 'web-next':
+        await fs.mkdir(path.join(projectPath, 'app'))
+        break
+      default:
+        // Create src folder
+        await fs.mkdir(path.join(projectPath, srcFolder))
+    }
 
     // Copy configuration files
-    await fs.copy(
-      path.join(__dirname, 'eslint.config.js'),
-      path.join(projectPath, 'eslint.config.js')
-    )
     await fs.copy(
       path.join(__dirname, 'prettier.config.js'),
       path.join(projectPath, 'prettier.config.js')
@@ -79,10 +116,10 @@ async function generateProject({
     )
 
     // Copy .vscode files
-    await fs.copy(
-      path.join(__dirname, 'people-and-code', '.vscode'),
-      path.join(projectPath, '.vscode')
-    )
+    // await fs.copy(
+    //   path.join(__dirname, 'people-and-code', '.vscode'),
+    //   path.join(projectPath, '.vscode')
+    // )
 
     // Create README.md
     await fs.writeFile(

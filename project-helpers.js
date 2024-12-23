@@ -89,3 +89,9 @@ export const peopleAndCode = (projectTitle, projectDescription) => {
     </html>
 `
 }
+
+export const nextPage = (projectTitle, projectDescription) => {
+  return `export default function Page() {
+    return <h1>Hello, Next.js!</h1>
+  }`
+}

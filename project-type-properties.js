@@ -1,6 +1,11 @@
 import fs from 'fs-extra'
 import path from 'path'
-import { webBasic, webArticle, peopleAndCode } from './project-helpers.js'
+import {
+  webBasic,
+  webArticle,
+  peopleAndCode,
+  nextPage,
+} from './project-helpers.js'
 
 export const addProjectTypeProperties = async (
   __dirname,
@@ -25,6 +30,31 @@ export const addProjectTypeProperties = async (
           path.join(__dirname, 'web', '.gitignore'),
           path.join(projectPath, '.gitignore')
         )
+
+        // ES lint configuration
+        await fs.copy(
+          path.join(__dirname, 'eslint.config.js'),
+          path.join(projectPath, 'eslint.config.js')
+        )
+      }
+      break
+    case 'web-next':
+      {
+        // Create a react page
+        const page = nextPage(projectTitle, projectDescription)
+        await fs.writeFile(path.join(projectPath, 'app', 'page.js'), page)
+
+        // Copy .gitignore file
+        await fs.copy(
+          path.join(__dirname, 'next', '.gitignore'),
+          path.join(projectPath, '.gitignore')
+        )
+
+        // ES lint configuration
+        await fs.copy(
+          path.join(__dirname, 'next', 'eslint.config.js'),
+          path.join(projectPath, 'eslint.config.js')
+        )
       }
       break
     case 'web-article':
@@ -46,6 +76,12 @@ export const addProjectTypeProperties = async (
         await fs.copy(
           path.join(__dirname, 'article', 'style.css'),
           path.join(projectPath, srcFolder, 'style.css')
+        )
+
+        // ES lint configuration
+        await fs.copy(
+          path.join(__dirname, 'eslint.config.js'),
+          path.join(projectPath, 'eslint.config.js')
         )
       }
       break
@@ -92,6 +128,12 @@ export const addProjectTypeProperties = async (
         await fs.copy(
           path.join(__dirname, 'people-and-code', 'robots.txt'),
           path.join(projectPath, srcFolder, 'robots.txt')
+        )
+
+        // ES lint configuration
+        await fs.copy(
+          path.join(__dirname, 'eslint.config.js'),
+          path.join(projectPath, 'eslint.config.js')
         )
       }
       break
