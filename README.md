@@ -14,13 +14,15 @@ This will give you global access to the web project generator.
 
 Open a terminal and navigate to where you want to locate your project.
 
-Type `create-web-project` and follow the instructions. There are 3 types of site available:
+Type `create-web-project` and follow the instructions. There are 4 types of site available:
 
 - Web basic
   - eslint
   - prettier
   - stylelint
   - parcel
+- Web next
+  - as basic plus Next.js for server-side rendering
 - Web article
   - as basic plus a three column page layout in css
 - People & Code website
