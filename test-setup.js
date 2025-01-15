@@ -56,32 +56,14 @@ export async function setupTests(
 
     // ES lint jest test configuration
     if (projectType === 'web-next') {
-      // await fs.copy(
-      //   path.join(__dirname, 'tests-next', 'eslint.config.js'),
-      //   path.join(projectPath, 'eslint.config.js')
-      // )
+      // Next.js projects are config'd during setup
     } else {
       await fs.copy(
         path.join(__dirname, 'tests', 'eslint.config.js'),
         path.join(projectPath, 'eslint.config.js')
       )
     }
-  } else {
-    // ES lint basic configuration
-    if (projectType === 'web-next') {
-      // await fs.copy(
-      //   path.join(__dirname, 'no-tests-next', 'eslint.config.js'),
-      //   path.join(projectPath, 'eslint.config.js')
-      // )
-    } else {
-      await fs.copy(
-        path.join(__dirname, 'no-tests', 'eslint.config.js'),
-        path.join(projectPath, 'eslint.config.js')
-      )
-    }
-  }
-
-  if (includeE2ETests) {
+  } else if (includeE2ETests) {
     // Set up Cypress directory structure
     await fs.mkdir(path.join(projectPath, 'cypress'))
     await fs.mkdir(path.join(projectPath, 'cypress/e2e'))
@@ -92,6 +74,16 @@ export async function setupTests(
 
     // Add example Cypress tests
     await addExampleCypressTests(projectPath, projectType)
+  } else {
+    // ES lint basic configuration
+    if (projectType === 'web-next') {
+      // Next.js projects are config'd during setup
+    } else {
+      await fs.copy(
+        path.join(__dirname, 'no-tests', 'eslint.config.js'),
+        path.join(projectPath, 'eslint.config.js')
+      )
+    }
   }
 }
 
@@ -164,13 +156,4 @@ async function addExampleCypressTests(projectPath, projectType) {
     path.join(projectPath, 'cypress/e2e/homepage.cy.js'),
     cypressTest
   )
-
-  // Add support file
-  // const supportFile = `
-  // import './commands'
-  // `
-  // await fs.writeFile(
-  //   path.join(projectPath, 'cypress/support/e2e.js'),
-  //   supportFile
-  // )
 }

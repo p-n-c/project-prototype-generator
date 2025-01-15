@@ -74,3 +74,44 @@ export default defineConfig({
 Or, for a change to a single spec, update the path e.g.
 
 `cy.visit('http://localhost:3000/')`
+
+For eslint ro recognise Mocha, etc. you may wish to update `eslint.config.js`
+
+First install the plugin:
+
+`npm install eslint eslint-plugin-cypress --save-dev`
+
+Then update the file:
+
+```js
+import globals from 'globals'
+import js from '@eslint/js'
+import pluginCypress from 'eslint-plugin-cypress/flat' // Add this line
+
+export default [
+  js.configs.recommended,
+  {
+    ignores: ['templates/'],
+  },
+  {
+    files: ['**/*.test.js', '**/*.spec.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+      },
+    },
+  },
+  {
+    languageOptions: {
+      globals: globals.browser,
+    },
+    rules: {
+      'no-unused-vars': 'warn',
+      'no-undef': 'warn',
+    },
+  },
+  pluginCypress.configs.recommended, // Add this line
+  pluginCypress.configs.globals, // Add this line
+]
+```

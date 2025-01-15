@@ -120,8 +120,8 @@ async function generateProject({
     if (includeE2ETests) {
       packageJson.scripts = {
         ...packageJson.scripts,
-        'test:e2e': 'cypress open',
-        'test:e2e:headless': 'cypress run',
+        'tests:e2e': 'cypress open',
+        'tests:e2e:headless': 'cypress run',
       }
     }
 
@@ -134,7 +134,7 @@ async function generateProject({
             dev: 'next dev',
             build: 'next build',
             start: 'next start',
-            lint: 'next lint',
+            lint: 'next lint && prettier --check .',
           },
           source: ['./app/page.jsx'],
           overrides: {
@@ -174,10 +174,12 @@ async function generateProject({
     )
 
     // Copy .vscode files
-    // await fs.copy(
-    //   path.join(__dirname, 'people-and-code', '.vscode'),
-    //   path.join(projectPath, '.vscode')
-    // )
+    if (projectType !== 'web-people-and-code') {
+      await fs.copy(
+        path.join(__dirname, '.vscode'),
+        path.join(projectPath, '.vscode')
+      )
+    }
 
     // Create README.md
     await fs.writeFile(
