@@ -12,7 +12,6 @@ export async function setupTests(
     // Add Jest configuration
     const jestConfig = {
       testEnvironment: 'jsdom',
-      // testEnvironment: projectType === 'web-next' ? 'jsdom' : 'node',
       setupFilesAfterEnv:
         projectType === 'web-next' ? ['<rootDir>/jest.setup.js'] : [],
       testMatch: [
@@ -30,20 +29,56 @@ export async function setupTests(
       spaces: 2,
     })
 
+    // Add jest.setup.js for Next.js projects
+    if (projectType === 'web-next') {
+      const setupFileContent = `
+        import '@testing-library/jest-dom'
+        
+        // Add any custom jest matchers here
+        // Add any global test setup here
+        `
+      await fs.writeFile(
+        path.join(projectPath, 'jest.setup.js'),
+        setupFileContent.trim()
+      )
+
+      // Babel config for Next.js projects
+      const babelConfig = {
+        presets: ['@babel/preset-env', '@babel/preset-react'],
+      }
+      await fs.writeJson(path.join(projectPath, '.babelrc'), babelConfig, {
+        spaces: 2,
+      })
+    }
+
     // Add example tests based on project type
     await addExampleTests(projectPath, projectType)
 
     // ES lint jest test configuration
-    await fs.copy(
-      path.join(__dirname, 'tests', 'eslint.config.js'),
-      path.join(projectPath, 'eslint.config.js')
-    )
+    if (projectType === 'web-next') {
+      // await fs.copy(
+      //   path.join(__dirname, 'tests-next', 'eslint.config.js'),
+      //   path.join(projectPath, 'eslint.config.js')
+      // )
+    } else {
+      await fs.copy(
+        path.join(__dirname, 'tests', 'eslint.config.js'),
+        path.join(projectPath, 'eslint.config.js')
+      )
+    }
   } else {
     // ES lint basic configuration
-    await fs.copy(
-      path.join(__dirname, 'no-tests', 'eslint.config.js'),
-      path.join(projectPath, 'eslint.config.js')
-    )
+    if (projectType === 'web-next') {
+      // await fs.copy(
+      //   path.join(__dirname, 'no-tests-next', 'eslint.config.js'),
+      //   path.join(projectPath, 'eslint.config.js')
+      // )
+    } else {
+      await fs.copy(
+        path.join(__dirname, 'no-tests', 'eslint.config.js'),
+        path.join(projectPath, 'eslint.config.js')
+      )
+    }
   }
 
   if (includeE2ETests) {
@@ -66,16 +101,17 @@ async function addExampleTests(projectPath, projectType) {
     case 'web-next': {
       // Example Next.js component test
       const componentTest = `
-import { render, screen } from '@testing-library/react'
-import Home from '../app/page'
+        import React from 'react'
+        import { render, screen } from '@testing-library/react'
+        import Home from '../app/page'
 
-describe('Home', () => {
-  it('renders the main heading', () => {
-    render(<Home />)
-    expect(screen.getByRole('heading', { level: 1 }))
-  })
-})
-`
+        describe('Home', () => {
+          it('renders the main heading', () => {
+            render(<Home />)
+            expect(screen.getByRole('heading', { level: 1 }))
+          })
+        })
+        `
       await fs.writeFile(
         path.join(projectPath, 'app/page.test.js'),
         componentTest

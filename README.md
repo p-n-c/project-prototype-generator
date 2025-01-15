@@ -35,7 +35,7 @@ The generator will take you through a series of straightforward questions before
 Initialising git repository...
 Gathering project files...
 Installing dependencies...
-This can take up to a minute...
+This can take a minute or two...
 ```
 
 Once the project has been built, you will be prompted to run commands to enter the project and run the linters.
@@ -70,3 +70,7 @@ export default defineConfig({
   },
 })
 ```
+
+Or, for a change to a single spec, update the path e.g.
+
+`cy.visit('http://localhost:3000/')`

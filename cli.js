@@ -24,8 +24,6 @@ async function generateProject({
   includeE2ETests,
 }) {
   const projectPath = path.join(process.cwd(), projectName)
-  console.log('includeUnitTests: ', includeUnitTests)
-  console.log('includeE2ETests: ', includeE2ETests)
   try {
     if (await fs.pathExists(projectPath)) {
       console.error(`Project directory "${projectName}" already exists.`)
@@ -64,6 +62,7 @@ async function generateProject({
           '@testing-library/react': 'latest',
           '@testing-library/jest-dom': 'latest',
           '@testing-library/user-event': 'latest',
+          '@babel/preset-react': 'latest',
         }
       } else {
         // Add DOM testing libraries for other project types
@@ -90,6 +89,7 @@ async function generateProject({
           react: 'latest',
           'react-dom': 'latest',
           '@next/eslint-plugin-next': 'latest',
+          // 'eslint-config-next': 'latest',
         }
         break
     }
@@ -136,7 +136,11 @@ async function generateProject({
             start: 'next start',
             lint: 'next lint',
           },
-          source: ['./app/page.js'],
+          source: ['./app/page.jsx'],
+          overrides: {
+            eslint: 'latest',
+            glob: 'latest',
+          },
         }
         break
       case 'web-people-and-code':
@@ -195,7 +199,7 @@ async function generateProject({
 
     // Install project dependencies and update the project owner
     console.log('Installing dependencies...')
-    console.log('This can take up to a minute...')
+    console.log('This can take a minute or two...')
     const { stdout } = await exec('npm install', { cwd: projectPath })
     console.log(stdout)
     console.log(

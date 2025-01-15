@@ -1,0 +1,6 @@
+node_modules
+.parcel-cache
+dist
+
+# Not required by all project setups
+.next
