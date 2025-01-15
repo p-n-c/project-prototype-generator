@@ -10,6 +10,26 @@ export const promptQuestions = async (input, select) => {
     ],
     default: 'web',
   })
+
+  // Add new testing prompts
+  const includeUnitTests = await select({
+    message: 'Add unit tests?',
+    choices: [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ],
+    default: true,
+  })
+
+  const includeE2ETests = await select({
+    message: 'Add E2E tests?',
+    choices: [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ],
+    default: true,
+  })
+
   const projectName = await input({
     message: 'Project name:',
     default: 'my-new-project',
@@ -38,5 +58,7 @@ export const promptQuestions = async (input, select) => {
     projectDescription,
     projectAuthor,
     srcFolder,
+    includeUnitTests,
+    includeE2ETests,
   }
 }

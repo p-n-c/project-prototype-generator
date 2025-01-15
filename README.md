@@ -35,6 +35,7 @@ The generator will take you through a series of straightforward questions before
 Initialising git repository...
 Gathering project files...
 Installing dependencies...
+This can take up to a minute...
 ```
 
 Once the project has been built, you will be prompted to run commands to enter the project and run the linters.
@@ -48,3 +49,24 @@ If you have set this up, you can open your new project in VS Code using the `cod
 [Adding locally hosted code to GitHub](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github)
 
 Follow the instructions (copy and paste code suggested in GitHub).
+
+## Tests
+
+### e2e tests
+
+If you are running e2e tests, Cypress will create several files during setup.
+
+For the tests to work, you need to change the default base URL:
+
+```js
+import { defineConfig } from 'cypress'
+
+export default defineConfig({
+  e2e: {
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+    baseUrl: 'http://localhost:1234', // add this line
+  },
+})
+```

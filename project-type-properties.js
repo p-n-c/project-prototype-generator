@@ -7,13 +7,21 @@ import {
   nextPage,
 } from './project-helpers.js'
 
+import { setupTests } from './test-setup.js'
+
 export const addProjectTypeProperties = async (
   __dirname,
   projectType,
   projectPath,
   options
 ) => {
-  const { projectTitle, projectDescription, srcFolder } = options
+  const {
+    projectTitle,
+    projectDescription,
+    srcFolder,
+    includeUnitTests,
+    includeE2ETests,
+  } = options
 
   switch (projectType) {
     case 'web':
@@ -31,11 +39,11 @@ export const addProjectTypeProperties = async (
           path.join(projectPath, '.gitignore')
         )
 
-        // ES lint configuration
-        await fs.copy(
-          path.join(__dirname, 'eslint.config.js'),
-          path.join(projectPath, 'eslint.config.js')
-        )
+        // // ES lint configuration
+        // await fs.copy(
+        //   path.join(__dirname, 'eslint.config.js'),
+        //   path.join(projectPath, 'eslint.config.js')
+        // )
       }
       break
     case 'web-next':
@@ -50,11 +58,11 @@ export const addProjectTypeProperties = async (
           path.join(projectPath, '.gitignore')
         )
 
-        // ES lint configuration
-        await fs.copy(
-          path.join(__dirname, 'next', 'eslint.config.js'),
-          path.join(projectPath, 'eslint.config.js')
-        )
+        // // ES lint configuration
+        // await fs.copy(
+        //   path.join(__dirname, 'next', 'eslint.config.js'),
+        //   path.join(projectPath, 'eslint.config.js')
+        // )
       }
       break
     case 'web-article':
@@ -78,11 +86,11 @@ export const addProjectTypeProperties = async (
           path.join(projectPath, srcFolder, 'style.css')
         )
 
-        // ES lint configuration
-        await fs.copy(
-          path.join(__dirname, 'eslint.config.js'),
-          path.join(projectPath, 'eslint.config.js')
-        )
+        // // ES lint configuration
+        // await fs.copy(
+        //   path.join(__dirname, 'eslint.config.js'),
+        //   path.join(projectPath, 'eslint.config.js')
+        // )
       }
       break
     case 'web-people-and-code':
@@ -130,12 +138,17 @@ export const addProjectTypeProperties = async (
           path.join(projectPath, srcFolder, 'robots.txt')
         )
 
-        // ES lint configuration
-        await fs.copy(
-          path.join(__dirname, 'eslint.config.js'),
-          path.join(projectPath, 'eslint.config.js')
-        )
+        // // ES lint configuration
+        // await fs.copy(
+        //   path.join(__dirname, 'eslint.config.js'),
+        //   path.join(projectPath, 'eslint.config.js')
+        // )
       }
       break
   }
+
+  await setupTests(projectPath, projectType, __dirname, {
+    includeUnitTests,
+    includeE2ETests,
+  })
 }

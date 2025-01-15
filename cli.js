@@ -20,9 +20,12 @@ async function generateProject({
   projectDescription,
   projectAuthor,
   srcFolder,
+  includeUnitTests,
+  includeE2ETests,
 }) {
   const projectPath = path.join(process.cwd(), projectName)
-
+  console.log('includeUnitTests: ', includeUnitTests)
+  console.log('includeE2ETests: ', includeE2ETests)
   try {
     if (await fs.pathExists(projectPath)) {
       console.error(`Project directory "${projectName}" already exists.`)
@@ -42,6 +45,41 @@ async function generateProject({
       stylelint: 'latest',
       parcel: 'latest',
       'stylelint-config-standard': 'latest',
+      globals: '^15.14.0',
+    }
+
+    // Add test dependencies based on project type and test choices
+    if (includeUnitTests) {
+      devDependencies = {
+        ...devDependencies,
+        jest: 'latest',
+        'jest-environment-jsdom': 'latest',
+        '@babel/preset-env': 'latest',
+      }
+
+      // Add React-specific testing libraries for Next.js
+      if (projectType === 'web-next') {
+        devDependencies = {
+          ...devDependencies,
+          '@testing-library/react': 'latest',
+          '@testing-library/jest-dom': 'latest',
+          '@testing-library/user-event': 'latest',
+        }
+      } else {
+        // Add DOM testing libraries for other project types
+        devDependencies = {
+          ...devDependencies,
+          '@testing-library/dom': 'latest',
+          '@testing-library/user-event': 'latest',
+        }
+      }
+    }
+
+    if (includeE2ETests) {
+      devDependencies = {
+        ...devDependencies,
+        cypress: 'latest',
+      }
     }
 
     switch (projectType) {
@@ -69,6 +107,22 @@ async function generateProject({
       },
       source: ['./src/index.html'],
       devDependencies,
+    }
+
+    if (includeUnitTests) {
+      packageJson.scripts = {
+        ...packageJson.scripts,
+        tests: 'jest',
+        'tests:watch': 'jest --watch',
+      }
+    }
+
+    if (includeE2ETests) {
+      packageJson.scripts = {
+        ...packageJson.scripts,
+        'test:e2e': 'cypress open',
+        'test:e2e:headless': 'cypress run',
+      }
     }
 
     switch (projectType) {
@@ -133,12 +187,15 @@ async function generateProject({
       projectTitle,
       projectDescription,
       srcFolder,
+      includeUnitTests,
+      includeE2ETests,
     })
 
     console.log('Gathering project files...')
 
     // Install project dependencies and update the project owner
     console.log('Installing dependencies...')
+    console.log('This can take up to a minute...')
     const { stdout } = await exec('npm install', { cwd: projectPath })
     console.log(stdout)
     console.log(
