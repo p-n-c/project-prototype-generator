@@ -1,0 +1,22 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "color-hex-case": "lower",
+    "color-hex-length": "short",
+    "color-named": "never",
+    "font-family-name-quotes": "always-where-required",
+    "function-url-quotes": "always",
+    "number-leading-zero": "always",
+    "number-no-trailing-zeros": true,
+    "string-quotes": "single",
+    "unit-case": "lower",
+    "value-keyword-case": "lower",
+    "property-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "at-rule-no-vendor-prefix": true,
+    "custom-property-pattern": null,
+    "selector-class-pattern": null
+  }
+}

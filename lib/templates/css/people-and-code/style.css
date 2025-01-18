@@ -1,0 +1,51 @@
+/* Base styles */
+:root {
+  --color-background: #fff;
+  --color-text: #333;
+  --color-link: #06c;
+  --color-link-visited: #551a8b;
+}
+
+/* Layout */
+.body {
+  margin: 0;
+  padding: 20px;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.main {
+  max-width: 65ch;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Accessibility */
+.local {
+  color: var(--color-link);
+}
+
+.local:visited {
+  color: var(--color-link-visited);
+}
+
+.local:focus {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+/* Skip link */
+a[href='#main'] {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px;
+  background: var(--color-background);
+  transition: top 0.2s;
+}
+
+a[href='#main']:focus {
+  top: 0;
+}
