@@ -1,6 +1,5 @@
 import globals from 'globals'
 import js from '@eslint/js'
-import pluginCypress from 'eslint-plugin-cypress/flat'
 
 export default [
   js.configs.recommended,
@@ -16,8 +15,6 @@ export default [
       },
     },
   },
-  pluginCypress.configs.recommended,
-  pluginCypress.configs.globals,
   {
     languageOptions: {
       globals: globals.browser,
