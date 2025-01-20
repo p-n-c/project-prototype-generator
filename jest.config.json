@@ -1,0 +1,14 @@
+{
+  "testEnvironment": "jsdom",
+  "testMatch": [
+    "<rootDir>/tests/**/*.test.[jt]s?(x)",
+    "<rootDir>/tests/**/*.spec.[jt]s?(x)"
+  ],
+  "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
+  "transform": {
+    "^.+\\.(js|jsx|ts|tsx)$": [
+      "babel-jest",
+      { "presets": ["@babel/preset-env"] }
+    ]
+  }
+}
