@@ -7,6 +7,15 @@ export default [
     ignores: ['templates/'],
   },
   {
+    files: ['**/*.test.js', '**/*.spec.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+      },
+    },
+  },
+  {
     languageOptions: {
       globals: globals.browser,
     },
