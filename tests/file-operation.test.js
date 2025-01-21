@@ -4,13 +4,17 @@ import path from 'path'
 import { FileOperations } from '../lib/file-operations.js'
 import { getProjectConfigByType } from '../lib/project-types-api.js'
 
-// Mock fs-extra and child_process
+// Mock external dependencies fs-extra and child_process
 jest.mock('fs-extra')
 jest.mock('child_process', () => {
+  // Retain access to the real implementations of other functions e.g. spawn
   const actualChildProcess = jest.requireActual('child_process')
   return {
     ...actualChildProcess,
-    exec: jest.fn(), // Mock the exec method explicitly
+    // Mock the exec method explicitly. Implementation provided by
+    // mockImplementation (custom implementation), or
+    // mockReturnValue or mockResolvedValue (return a fixed value)
+    exec: jest.fn(),
   }
 })
 
@@ -32,6 +36,8 @@ describe('FileOperations', () => {
     fs.copy.mockResolvedValue(undefined)
     fs.readFile.mockResolvedValue('template content')
     fs.outputFile.mockResolvedValue(undefined)
+    // Implement the signature of the callback from exec function:
+    // exec(command, options, callback)
     exec.mockImplementation((command, options, callback) => {
       callback(null, { stdout: 'success' }, null)
     })
@@ -53,8 +59,7 @@ describe('FileOperations', () => {
       expect(fs.ensureDir).toHaveBeenCalledWith(projectRoot)
       expect(fs.ensureDir).toHaveBeenCalledWith(path.join(projectRoot, 'src'))
 
-      // Verify git initialization
-      // expect(exec).toHaveBeenCalledWith('git init', { cwd: projectRoot })
+      // Verify git initialisation
       expect(exec).toHaveBeenCalledWith(
         'git init',
         { cwd: projectRoot },
@@ -126,7 +131,7 @@ describe('FileOperations', () => {
       consoleSpy.mockRestore() // Restore original behavior
     })
 
-    it('should handle git initialization errors', async () => {
+    it('should handle git initialisation errors', async () => {
       const consoleSpy = jest
         .spyOn(console, 'error')
         .mockImplementation(() => {})
