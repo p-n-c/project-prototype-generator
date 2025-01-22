@@ -30,7 +30,7 @@ export const projectConfigSchema = {
         type: ['string', 'array'],
         description: 'React component file(s)',
       },
-      additionalFiles: {
+      other: {
         type: 'array',
         description: 'Additional template files',
       },

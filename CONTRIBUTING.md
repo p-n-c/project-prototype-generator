@@ -22,7 +22,7 @@ YOUR_PROJECT_TYPE: {
     templates: {
         html: 'index.html',       // Main template files
         css: ['style.css'],       // Array for multiple files
-        additionalFiles: [],      // Optional extra files
+        other: [],      // Optional extra files
     },
     dependencies: {
         base: {
