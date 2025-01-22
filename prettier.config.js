@@ -9,6 +9,12 @@ const config = {
   tabWidth: 2,
   semi: false,
   singleQuote: true,
+  overrides: [
+    {
+      files: '*.jsx',
+      options: { parser: 'ignore' }, // This will effectively ignore `.jsx` files
+    },
+  ],
 }
 
 export default config
