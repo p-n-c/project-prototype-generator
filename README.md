@@ -92,3 +92,7 @@ Follow the instructions (copy and paste code suggested in GitHub).
 If you are running e2e tests, Cypress will create several files during setup, including an example test/spec. For this reason, we have not included configuration or example tests in the generator.
 
 ---
+
+## New Project Configurations
+
+To add a new configuration, please refer to the [CONTRIBUTING.md](https://github.com/p-n-c/web-project-generator/blob/main/CONTRIBUTING.md)
