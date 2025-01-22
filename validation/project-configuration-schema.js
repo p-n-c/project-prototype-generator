@@ -26,10 +26,6 @@ export const projectConfigSchema = {
         type: ['string', 'array'],
         description: 'CSS template file(s)',
       },
-      react: {
-        type: ['string', 'array'],
-        description: 'React component file(s)',
-      },
       other: {
         type: 'array',
         description: 'Additional template files',
