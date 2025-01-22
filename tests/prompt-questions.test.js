@@ -22,13 +22,12 @@ describe('promptQuestions', () => {
     jest.clearAllMocks()
 
     // First call promptQuestions to set up the mocks f
-    mockSelects(['basic', true, false])
+    mockSelects(['basic', 'src', true, false])
     mockInputs([
       'test-project',
       'Test Project',
       'A test project',
       'Test Author',
-      'src',
     ])
 
     // Start the promptQuestions call in the background
@@ -41,13 +40,12 @@ describe('promptQuestions', () => {
   describe('happy path', () => {
     beforeEach(() => {
       // Mock successful responses
-      mockSelects(['basic', true, false])
+      mockSelects(['basic', 'src', true, false])
       mockInputs([
         'test-project',
         'Test Project',
         'A test project',
         'Test Author',
-        'src',
       ])
     })
 
@@ -56,11 +54,11 @@ describe('promptQuestions', () => {
 
       expect(result).toEqual({
         projectType: 'basic',
+        srcFolder: 'src',
         projectName: 'test-project',
         projectTitle: 'Test Project',
         projectDescription: 'A test project',
         projectAuthor: 'Test Author',
-        srcFolder: 'src',
         includeUnitTests: true,
         includeE2ETests: false,
       })
@@ -136,6 +134,21 @@ describe('promptQuestions', () => {
     })
   })
 
+  describe('space handling in project name', () => {
+    it('should replace spaces with hyphens in project name', async () => {
+      mockSelects(['basic', 'src', true, false])
+      mockInputs([
+        'test-project',
+        'Test Project',
+        'A test project',
+        'Test Author',
+      ])
+
+      const result = await promptQuestions()
+      expect(result.projectName).toBe('test-project')
+    })
+  })
+
   describe('error handling', () => {
     it('should handle prompt rejections', async () => {
       select.mockRejectedValueOnce(new Error('Prompt failed'))
@@ -144,8 +157,6 @@ describe('promptQuestions', () => {
     })
 
     it('should handle empty inputs for required fields', async () => {
-      mockSelects(['basic', true, false])
-
       input
         .mockResolvedValueOnce('') // empty project name
         .mockResolvedValueOnce('Test Project')
@@ -160,22 +171,6 @@ describe('promptQuestions', () => {
       expect(validateFn('')).toBe(
         'Project name can only contain lowercase letters, numbers, and hyphens'
       )
-    })
-  })
-
-  describe('space handling in project name', () => {
-    it('should replace spaces with hyphens in project name', async () => {
-      mockSelects(['basic', true, false])
-
-      input
-        .mockResolvedValueOnce('test project') // name with space
-        .mockResolvedValueOnce('Test Project')
-        .mockResolvedValueOnce('A test project')
-        .mockResolvedValueOnce('Test Author')
-        .mockResolvedValueOnce('src')
-
-      const result = await promptQuestions()
-      expect(result.projectName).toBe('test-project')
     })
   })
 })

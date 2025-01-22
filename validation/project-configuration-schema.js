@@ -1,8 +1,10 @@
+import { sourcePattern, namePattern } from './utils.js'
+
 export const projectConfigSchema = {
   type: {
     type: 'string',
     required: true,
-    pattern: /^[a-z-]+$/, // lowercase with underscores
+    pattern: namePattern,
     description: 'Unique identifier for the project type',
   },
   name: {
@@ -118,5 +120,11 @@ export const projectConfigSchema = {
     type: 'boolean',
     required: false,
     description: 'Whether project needs custom VS Code settings',
+  },
+  source: {
+    type: 'string',
+    required: true,
+    pattern: sourcePattern,
+    description: 'The entry point for the application',
   },
 }

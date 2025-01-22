@@ -2,7 +2,8 @@
   "testEnvironment": "jsdom",
   "testMatch": [
     "<rootDir>/tests/**/*.test.[jt]s?(x)",
-    "<rootDir>/tests/**/*.spec.[jt]s?(x)"
+    "<rootDir>/tests/**/*.spec.[jt]s?(x)",
+    "<rootDir>/validation/**/*.test.[jt]s?(x)"
   ],
   "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
   "transform": {
