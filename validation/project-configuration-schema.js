@@ -2,7 +2,7 @@ export const projectConfigSchema = {
   type: {
     type: 'string',
     required: true,
-    pattern: /^[a-z_]+$/, // lowercase with underscores
+    pattern: /^[a-z-]+$/, // lowercase with underscores
     description: 'Unique identifier for the project type',
   },
   name: {
