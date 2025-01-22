@@ -22,7 +22,7 @@ YOUR_PROJECT_TYPE: {
     templates: {
         html: 'index.html',       // Main template files
         css: ['style.css'],       // Array for multiple files
-        other: [],                // Optional extra files
+        other: [],                // Optional extra files e.g. page.jsx
     },
     dependencies: {
         base: {
@@ -55,7 +55,7 @@ YOUR_PROJECT_TYPE: {
 
 ### 2. Create Template Files
 
-1. Create a directory for your project type in `templates/`
+1. Create sub directories for your project type in `templates/` for each section. If you have files other than `html`, `css` or tests files, use `other` e.g. `templates/other/next/layout.jsx`.
 
    ```text
    templates/
@@ -108,12 +108,13 @@ If your project type supports testing:
 
 ## Validation
 
-Your project configuration will be validated at runtime to ensure:
+You can run a basic validation of your project configuration.
 
-- All required fields are present
-- Template files referenced in configuration exist
-- Dependencies and scripts are properly structured
+You can validate a single config by passing in the config type as an argument e.g. `basic` or with no arguments to validate all configs.
 
-## Example
+```shell
+node validation/validate-config.js basic
+node validation/validate-config.js
+```
 
-See the `ARTICLE` type in `project-types.js` for a complete example of a project configuration.
+Validation checks that all required fields are present.
