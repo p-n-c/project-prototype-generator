@@ -1,4 +1,4 @@
-import { sourcePattern, namePattern } from './utils.js'
+import { sourcePattern, namePattern, srcFolderPattern } from './utils.js'
 
 export const projectConfigSchema = {
   type: {
@@ -125,6 +125,12 @@ export const projectConfigSchema = {
     type: 'string',
     required: true,
     pattern: sourcePattern,
+    description: 'The entry point for the application',
+  },
+  srcFolder: {
+    type: 'string',
+    required: true,
+    pattern: srcFolderPattern,
     description: 'The entry point for the application',
   },
 }

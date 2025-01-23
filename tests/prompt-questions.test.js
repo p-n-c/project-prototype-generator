@@ -22,7 +22,7 @@ describe('promptQuestions', () => {
     jest.clearAllMocks()
 
     // First call promptQuestions to set up the mocks f
-    mockSelects(['basic', 'src', true, false])
+    mockSelects(['basic', true, false])
     mockInputs([
       'test-project',
       'Test Project',
@@ -40,7 +40,7 @@ describe('promptQuestions', () => {
   describe('happy path', () => {
     beforeEach(() => {
       // Mock successful responses
-      mockSelects(['basic', 'src', true, false])
+      mockSelects(['basic', true, false])
       mockInputs([
         'test-project',
         'Test Project',
@@ -102,18 +102,18 @@ describe('promptQuestions', () => {
 
       // Test invalid cases
       expect(validateFn('Test Project')).toBe(
-        'Project name can only contain lowercase letters, numbers, and hyphens'
+        'Project name must use Kebab casing'
       )
-      expect(validateFn('TEST')).toBe(
-        'Project name can only contain lowercase letters, numbers, and hyphens'
-      )
+      expect(validateFn('TEST')).toBe('Project name must use Kebab casing')
       expect(validateFn('test_project')).toBe(
-        'Project name can only contain lowercase letters, numbers, and hyphens'
+        'Project name must use Kebab casing'
+      )
+      expect(validateFn('my-project-123')).toBe(
+        'Project name must use Kebab casing'
       )
 
       // Test valid cases
       expect(validateFn('test-project')).toBe(true)
-      expect(validateFn('my-project-123')).toBe(true)
     })
   })
 
@@ -136,7 +136,7 @@ describe('promptQuestions', () => {
 
   describe('space handling in project name', () => {
     it('should replace spaces with hyphens in project name', async () => {
-      mockSelects(['basic', 'src', true, false])
+      mockSelects(['basic', true, false])
       mockInputs([
         'test-project',
         'Test Project',
@@ -168,9 +168,7 @@ describe('promptQuestions', () => {
         (call) => call[0].message === 'Project name:'
       )[0].validate
 
-      expect(validateFn('')).toBe(
-        'Project name can only contain lowercase letters, numbers, and hyphens'
-      )
+      expect(validateFn('')).toBe('Project name must use Kebab casing')
     })
   })
 })

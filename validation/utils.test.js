@@ -1,4 +1,4 @@
-import { sourcePattern, namePattern } from './utils.js'
+import { sourcePattern, namePattern, srcFolderPattern } from './utils.js'
 
 describe('sourcePattern', () => {
   const validCases = [
@@ -74,4 +74,42 @@ describe('namePattern', () => {
   test.each(invalidCases)('should not match invalid name: %s', (name) => {
     expect(namePattern.test(name)).toBe(false)
   })
+})
+
+describe('source folder name validation', () => {
+  const validCases = [
+    'src',
+    'app',
+    'source',
+    'frontend',
+    'client',
+    'public',
+    'assets',
+    'www',
+    'dist',
+    'ui',
+  ]
+
+  const invalidCases = [
+    'Src', // Case-sensitive (must be lowercase)
+    'apps', // Not in the list
+    'source-folder', // Extra characters not allowed
+    'frontend123', // Numbers not allowed
+    'public_assets', // Underscore not allowed
+    '', // Empty string
+    'client.app', // Dot not allowed
+    'dist/', // Slash not allowed
+    'main', // Not in the list
+  ]
+
+  test.each(validCases)('should allow valid folder name: %s', (folderName) => {
+    expect(srcFolderPattern.test(folderName)).toBe(true)
+  })
+
+  test.each(invalidCases)(
+    'should reject invalid folder name: %s',
+    (folderName) => {
+      expect(srcFolderPattern.test(folderName)).toBe(false)
+    }
+  )
 })

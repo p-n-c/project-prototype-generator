@@ -21,3 +21,7 @@ export const namePattern = /^(?!-)(?!.*--)[a-z]+(-[a-z]+)*(?<!-)$/
 // [a-z]+: Matches one or more lowercase letters.
 // (-[a-z]+)*: Allows optional segments of a hyphen followed by lowercase letters.
 // (?<!-)$: Ensures the name does not end with a hyphen.
+
+// Pattern to match top ten most common source folder names (src, app, source, frontend, client, public, assets, www, dist, ui)
+export const srcFolderPattern =
+  /^(src|app|source|frontend|client|public|assets|www|dist|ui)$/
