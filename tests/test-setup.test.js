@@ -1,6 +1,6 @@
 import fs from 'fs-extra'
 import path from 'path'
-import { TestSetup } from '../lib/test-helpers.js'
+import { TestSetup } from '../lib/test-setup.js'
 import { getProjectConfigByType } from '../lib/project-types-api.js'
 
 // Mock fs-extra
