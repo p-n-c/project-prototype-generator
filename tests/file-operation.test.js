@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import { exec } from 'child_process'
 import path from 'path'
 import { FileOperations } from '../lib/file-operations.js'
-import { getProjectConfigByType } from '../lib/project-types-api.js'
+import { getProjectConfigByType } from '../lib/project-definitions-api.js'
 
 // Mock external dependencies fs-extra and child_process
 jest.mock('fs-extra')

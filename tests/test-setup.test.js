@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { TestSetup } from '../lib/test-setup.js'
-import { getProjectConfigByType } from '../lib/project-types-api.js'
+import { getProjectConfigByType } from '../lib/project-definitions-api.js'
 
 // Mock fs-extra
 jest.mock('fs-extra')

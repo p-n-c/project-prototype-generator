@@ -1,6 +1,6 @@
 import { input, select } from '@inquirer/prompts'
 import { promptQuestions } from '../lib/prompt-questions.js'
-import { getAllProjectTypes } from '../lib/project-types-api.js'
+import { getAllProjectTypes } from '../lib/project-definitions-api.js'
 
 // Mock @inquirer/prompts
 jest.mock('@inquirer/prompts', () => ({

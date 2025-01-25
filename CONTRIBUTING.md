@@ -4,7 +4,7 @@ This document explains how to add a new project type to the web project generato
 
 Adding a new project type requires:
 
-1. Configuration in `project-types.js`
+1. Configuration in `project-definitions.js`
 2. Template files
 3. Test configuration files (if supporting tests)
 
@@ -12,7 +12,7 @@ Adding a new project type requires:
 
 ### 1. Add Project Configuration
 
-In `project-types.js`, add a new entry to `PROJECT_TYPES`:
+In `project-definitions.js`, add a new entry to `PROJECT_DEFINITIONS`:
 
 ```javascript
 YOUR_PROJECT_TYPE: {

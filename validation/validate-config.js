@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable no-undef */
-import { getAllProjectTypes } from '../lib/project-types-api.js'
+import { getAllProjectTypes } from '../lib/project-definitions-api.js'
 import {
   validateProjectConfig,
   validateAllProjectConfigs,
