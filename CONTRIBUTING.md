@@ -16,13 +16,13 @@ In `project-types.js`, add a new entry to `PROJECT_TYPES`:
 
 ```javascript
 YOUR_PROJECT_TYPE: {
-    type: 'your_project_type',    // Unique identifier
-    name: 'Display Name',         // User-friendly name
-    description: 'Description',   // Shown in project selection
+    type: 'your_project_type',      // Unique identifier
+    name: 'Display Name',           // User-friendly name
+    description: 'Description',     // Shown in project selection
     templates: {
-        html: 'index.html',       // Main template files
-        css: ['style.css'],       // Array for multiple files
-        other: [],                // Optional extra files e.g. page.jsx
+        html: 'index.html',         // Main template files
+        css: ['style.css'],         // Array for multiple files
+        jsx: [],                    // Optional extra files e.g. page.jsx
     },
     dependencies: {
         base: {
@@ -55,20 +55,18 @@ YOUR_PROJECT_TYPE: {
 
 ### 2. Create Template Files
 
-1. Create sub directories for your project type in `templates/` for each section. If you have files other than `html`, `css` or tests files, use `other` e.g. `templates/other/next/layout.jsx`.
+1. Create a sub directory for your project type in `templates/`. Add files in folders of your choice e.g. `html`, `css`, `jsx` e.g. `templates/next/jsx/layout.jsx`.
 
    ```text
    templates/
+   └── your_project_type/
    ├── html/
-   │   └── your_project_type/
-   │       └── index.html
+   │   └── index.html
    ├── css/
-   │   └── your_project_type/
-   │       └── style.css
+   │   └── style.css
    └── tests/
        └── unit/
-           └── your_project_type/
-               └── index.test.js
+           └── index.test.js
    ```
 
 2. Add template files with variables using `{{variableName}}` syntax
