@@ -35,9 +35,9 @@ describe('TestSetup', () => {
       expect(testSetup.testTemplatesPath).toBe(
         path.join(templateRoot, 'templates')
       )
-      // generator root should be '/test/generator'
+      // generator root should be '/test/generator/lib'
       expect(testSetup.configsPath).toBe(
-        path.join('/test/generator', 'configs')
+        path.join('/test/generator/lib', 'configs')
       )
     })
   })
