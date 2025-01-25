@@ -33,7 +33,7 @@ describe('TestSetup', () => {
       expect(testSetup.templateRoot).toBe(templateRoot)
       expect(testSetup.srcFolder).toBe(srcFolder)
       expect(testSetup.testTemplatesPath).toBe(
-        path.join(templateRoot, 'templates', 'tests')
+        path.join(templateRoot, 'templates')
       )
       // generator root should be '/test/generator'
       expect(testSetup.configsPath).toBe(
@@ -81,7 +81,9 @@ describe('TestSetup', () => {
       // Verify test templates copying
       expect(fs.readdir).toHaveBeenCalled()
       expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(path.join('unit', 'basic', 'index.test.js')),
+        expect.stringContaining(
+          path.join('basic', 'tests', 'unit', 'index.test.js')
+        ),
         expect.any(String)
       )
     })
