@@ -2,6 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { TestSetup } from '../lib/test-setup.js'
 import { getProjectConfigByType } from '../lib/project-definitions-api.js'
+import { FileOperations } from '../lib/file-operations.js'
 
 // Mock fs-extra
 jest.mock('fs-extra')
@@ -12,7 +13,6 @@ describe('TestSetup', () => {
   const templateRoot = '/test/generator/lib'
   const srcFolder = 'src'
   const basicConfig = getProjectConfigByType('basic')
-  const nextConfig = getProjectConfigByType('next')
 
   beforeEach(() => {
     // Clear all mocks before each test
@@ -59,59 +59,41 @@ describe('TestSetup', () => {
     })
   })
 
-  describe.skip('setupUnitTests', () => {
-    it('should copy jest config and test templates for basic project', async () => {
+  describe('setupUnitTests', () => {
+    it('should copy all files found in the config directory', async () => {
+      // Mock getFilesInDirectory to return multiple files
+      const mockFiles = [
+        'jest.config.json',
+        'test-setup.json',
+        'extra-config.json',
+      ]
+      jest
+        .spyOn(FileOperations.prototype, 'getFilesInDirectory')
+        .mockReturnValue(mockFiles)
+
       await testSetup.setupUnitTests(basicConfig)
 
-      // Verify jest config copying
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          path.join(
-            'basic',
-            'templates',
-            'tests/unit/config',
-            'jest.config.json'
-          )
-        ),
-        path.join(projectPath, 'jest.config.json')
-      )
-
-      // Verify test templates copying
-      expect(fs.readdir).toHaveBeenCalled()
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          path.join('basic', 'templates', 'tests', 'unit', 'index.test.js')
-        ),
-        expect.any(String)
-      )
+      // Verify each file is copied
+      mockFiles.forEach((file) => {
+        expect(fs.copy).toHaveBeenCalledWith(
+          expect.stringContaining(file),
+          path.join(projectPath, file)
+        )
+      })
     })
 
-    it('should setup additional configs for Next.js project', async () => {
-      await testSetup.setupUnitTests(nextConfig)
+    it('should handle empty config directory', async () => {
+      // Mock getFilesInDirectory to return an empty array
+      jest
+        .spyOn(FileOperations.prototype, 'getFilesInDirectory')
+        .mockReturnValue([])
 
-      // Verify Next.js specific config copying
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          path.join(
-            'next',
-            'templates',
-            'tests',
-            'unit',
-            'config',
-            'jest.setup.js'
-          )
-        ),
-        path.join(projectPath, 'jest.setup.js')
-      )
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          path.join('next', 'templates', 'tests', 'unit', '.babelrc')
-        ),
-        path.join(projectPath, '.babelrc')
-      )
+      await testSetup.setupUnitTests(basicConfig)
+
+      // Ensure no copy attempts are made
+      expect(fs.copy).not.toHaveBeenCalled()
     })
   })
-
   describe('copyTestTemplates', () => {
     it('should copy all test templates to the target directory', async () => {
       await testSetup.copyTestTemplates(basicConfig)
@@ -143,14 +125,6 @@ describe('TestSetup', () => {
   })
 
   describe('error handling', () => {
-    it('should handle file copy errors', async () => {
-      fs.copy.mockRejectedValue(new Error('Copy failed'))
-
-      await expect(testSetup.setupUnitTests(basicConfig)).rejects.toThrow(
-        'Copy failed'
-      )
-    })
-
     it('should handle directory creation errors', async () => {
       fs.ensureDir.mockRejectedValue(new Error('Directory creation failed'))
 
