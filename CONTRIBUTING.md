@@ -4,13 +4,12 @@ This document explains how to add a new project type to the web project generato
 
 Adding a new project type requires:
 
-1. Configuration in `project-definitions.js`
-2. Template files
-3. Test configuration files (if supporting tests)
+1. A project definition file
+2. A matching project directory
 
 ## Step-by-Step Guide
 
-### 1. Add Project Configuration
+### 1. The Project Definition File
 
 In `project-definitions.js`, add a new entry to `PROJECT_DEFINITIONS`:
 
@@ -55,19 +54,33 @@ YOUR_PROJECT_TYPE: {
 
 ### 2. Create Template Files
 
-1. Create a sub directory for your project type in `templates/`. Add files in folders of your choice e.g. `html`, `css`, `jsx` e.g. `templates/next/jsx/layout.jsx`.
+1. Create a sub directory `templates/`. Add files in folders of your choice e.g. `html`, `css`, `jsx` e.g. `templates/basic/html/index.html`.
 
    ```text
-   templates/
-   └── your_project_type/
-   ├── html/
-   │   └── index.html
-   ├── css/
-   │   └── style.css
-   └── tests/
-       └── unit/
-           └── index.test.js
+   lib/
+   └── basic/
+    ├── templates/
+    │   ├── html/
+    │   │   └── index.html
+    │   └── tests/
+    │       └── unit/
+    │           ├── index.test.js
+    │           └── config/
+    │               └── jest.config.json
+    └── project-definition.js
    ```
+
+This file structure is reflected in the `project-definition.js` file e.g.
+
+```json
+{
+  "templates": {
+    "html": "index.html"
+  }
+}
+```
+
+The relationship between the project definition and the directory structure is by convention but it will be checked in the unit tests.
 
 2. Add template files with variables using `{{variableName}}` syntax
 
@@ -81,6 +94,8 @@ YOUR_PROJECT_TYPE: {
   ...
 </html>
 ```
+
+Variables will be replaced by project-specific values before the file is copied to the new project.
 
 ### 3. Add Test Configurations (Optional)
 
