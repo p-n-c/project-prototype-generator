@@ -1,17 +1,66 @@
 # Adding New Project Types
 
-This document explains how to add a new project type to the web project generator.
+This document explains how to add a new project to the web project generator.
 
-Adding a new project type requires:
+To create a new project you need to:
 
-1. A project definition file
-2. A matching project directory
+1. Create a project directory under `lib/projects`
+2. Add a project definition file with properties that match the project directory structure
+3. Add templates and configuration files
+
+When you run the generator, your project definition will get picked up and added to the existing projects.
 
 ## Step-by-Step Guide
 
-### 1. The Project Definition File
+### 1. The Project Directory
 
-In `project-definitions.js`, add a new entry to `PROJECT_DEFINITIONS`:
+1. Create a new directory under `projects` with the name of your project. All files specific to your project will go under this.  
+   Add files in folders of your choice e.g. `html`, `css`, `jsx` e.g. `templates/basic/html/index.html`.
+
+   ```text
+   projects/
+   └── basic/                               -- required name
+    ├── templates/                          -- required name
+    │   ├── html/
+    │   │   └── index.html
+    │   └── tests/                          -- required name
+    │       └── unit/                       -- required name
+    │           ├── index.test.js
+    │           └── config/                 -- required name
+    │               └── jest.config.json
+    └── project-definition.js               -- required name
+   ```
+
+This file structure is reflected in the `project-definition.js` file e.g.
+
+```json
+{
+  "templates": {
+    "html": "index.html"
+  }
+}
+```
+
+The relationship between the project definition and the directory structure is by convention but it will be checked in the unit tests.
+
+1. Add template files with variables using `{{variableName}}` syntax
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{{projectTitle}}</title>
+    <meta name="description" content="{{projectDescription}}" />
+  </head>
+  ...
+</html>
+```
+
+Variables will be replaced by project-specific values before the file is copied to the new project.
+
+### 2. The Project Definition File
+
+Your project definition file will get picked up when the generator runs, and your project will be added to list of project types from which people can select.
 
 ```javascript
 YOUR_PROJECT_TYPE: {
@@ -52,51 +101,6 @@ YOUR_PROJECT_TYPE: {
 }
 ```
 
-### 2. Create Template Files
-
-1. Create a sub directory `templates/`. Add files in folders of your choice e.g. `html`, `css`, `jsx` e.g. `templates/basic/html/index.html`.
-
-   ```text
-   lib/
-   └── basic/
-    ├── templates/
-    │   ├── html/
-    │   │   └── index.html
-    │   └── tests/
-    │       └── unit/
-    │           ├── index.test.js
-    │           └── config/
-    │               └── jest.config.json
-    └── project-definition.js
-   ```
-
-This file structure is reflected in the `project-definition.js` file e.g.
-
-```json
-{
-  "templates": {
-    "html": "index.html"
-  }
-}
-```
-
-The relationship between the project definition and the directory structure is by convention but it will be checked in the unit tests.
-
-2. Add template files with variables using `{{variableName}}` syntax
-
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>{{projectTitle}}</title>
-    <meta name="description" content="{{projectDescription}}" />
-  </head>
-  ...
-</html>
-```
-
-Variables will be replaced by project-specific values before the file is copied to the new project.
-
 ### 3. Add Test Configurations (Optional)
 
 If your project type supports testing:
@@ -118,6 +122,10 @@ If your project type supports testing:
 - `{{projectTitle}}`: Project title from user input
 - `{{projectDescription}}`: Project description from user input
 - `{{currentYear}}`: Current year (auto-populated)
+
+### Tips and Hints
+
+- If you don't want eslint configuration, add an ignore command e.g. `ignores: ['eslint']`. Next.js, for example, incorporates setup for eslint.
 
 ## Validation
 
