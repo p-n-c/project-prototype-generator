@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Generator for web sites based on standard templates",
   "scripts": {
-    "vitest": "vitest"
+    "test": "vitest"
   },
   "keywords": [
     "web",
