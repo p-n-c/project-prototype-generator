@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Generator for web sites based on standard templates",
   "scripts": {
-    "test": "jest"
+    "vitest": "vitest"
   },
   "keywords": [
     "web",
@@ -20,14 +20,12 @@
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.26.0",
     "@testing-library/dom": "^10.4.0",
     "eslint": "^9.13.0",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.3.3",
     "stylelint": "^16.10.0",
-    "stylelint-config-standard": "^36.0.1"
+    "stylelint-config-standard": "^36.0.1",
+    "vitest": "^3.0.4"
   },
   "bin": {
     "create-web-project": "./lib/cli.js"

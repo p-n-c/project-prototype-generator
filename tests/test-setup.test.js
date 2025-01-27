@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import fs from 'fs-extra'
 import path from 'path'
 import { TestSetup } from '../lib/test-setup.js'
@@ -5,21 +6,73 @@ import { getProjectConfigByType } from '../lib/project-definitions-api.js'
 import { FileOperations } from '../lib/file-operations.js'
 
 // Mock fs-extra
-jest.mock('fs-extra')
+vi.mock('fs-extra')
+
+const basicConfig = {
+  type: 'basic',
+  name: 'Web Basic',
+  description: 'Basic web project with modern tooling',
+  templates: {
+    html: 'index.html',
+  },
+  dependencies: {
+    base: {
+      eslint: 'latest',
+      prettier: 'latest',
+      stylelint: 'latest',
+      parcel: 'latest',
+      'stylelint-config-standard': 'latest',
+      globals: '^15.14.0',
+    },
+    test: {
+      unit: {
+        jest: 'latest',
+        'jest-environment-jsdom': 'latest',
+        '@babel/preset-env': 'latest',
+        '@testing-library/dom': 'latest',
+        '@testing-library/user-event': 'latest',
+      },
+      e2e: {
+        cypress: 'latest',
+      },
+    },
+  },
+  scripts: {
+    base: {
+      lint: 'eslint . && prettier --write . --log-level silent',
+      start: 'parcel && npm run static',
+    },
+    test: {
+      test: 'jest',
+      'test:watch': 'jest --watch',
+      'test:e2e': 'cypress open',
+      'test:e2e:headless': 'cypress run',
+    },
+  },
+  srcFolder: 'src',
+  source: 'index.html',
+}
+
+vi.mock('../lib/project-definitions-api.js')
+getProjectConfigByType.mockResolvedValue(basicConfig)
 
 describe('TestSetup', () => {
   let testSetup
   const projectPath = '/test/project'
   const templateRoot = '/test/generator/lib'
   const srcFolder = 'src'
-  const basicConfig = getProjectConfigByType('basic')
 
   beforeEach(() => {
     // Clear all mocks before each test
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     // Create new TestSetup instance
-    testSetup = new TestSetup(projectPath, templateRoot, srcFolder)
+    testSetup = new TestSetup(
+      projectPath,
+      templateRoot,
+      srcFolder,
+      getProjectConfigByType
+    )
 
     // Setup basic mock implementations
     fs.ensureDir.mockResolvedValue(undefined)
@@ -37,7 +90,7 @@ describe('TestSetup', () => {
 
   describe('setupProjectTests', () => {
     it('should setup unit tests when includeUnitTests is true', async () => {
-      const setupUnitTestsSpy = jest.spyOn(testSetup, 'setupUnitTests')
+      const setupUnitTestsSpy = vi.spyOn(testSetup, 'setupUnitTests')
 
       await testSetup.setupProjectTests(basicConfig, {
         includeUnitTests: true,
@@ -48,7 +101,7 @@ describe('TestSetup', () => {
     })
 
     it('should not setup any tests when both options are false', async () => {
-      const setupUnitTestsSpy = jest.spyOn(testSetup, 'setupUnitTests')
+      const setupUnitTestsSpy = vi.spyOn(testSetup, 'setupUnitTests')
 
       await testSetup.setupProjectTests(basicConfig, {
         includeUnitTests: false,
@@ -63,13 +116,13 @@ describe('TestSetup', () => {
     it('should copy all files found in the config directory', async () => {
       // Mock getFilesInDirectory to return multiple files
       const mockFiles = [
-        'jest.config.json',
+        'vi.config.json',
         'test-setup.json',
         'extra-config.json',
       ]
-      jest
-        .spyOn(FileOperations.prototype, 'getFilesInDirectory')
-        .mockReturnValue(mockFiles)
+      vi.spyOn(FileOperations.prototype, 'getFilesInDirectory').mockReturnValue(
+        mockFiles
+      )
 
       await testSetup.setupUnitTests(basicConfig)
 
@@ -84,9 +137,9 @@ describe('TestSetup', () => {
 
     it('should handle empty config directory', async () => {
       // Mock getFilesInDirectory to return an empty array
-      jest
-        .spyOn(FileOperations.prototype, 'getFilesInDirectory')
-        .mockReturnValue([])
+      vi.spyOn(FileOperations.prototype, 'getFilesInDirectory').mockReturnValue(
+        []
+      )
 
       await testSetup.setupUnitTests(basicConfig)
 

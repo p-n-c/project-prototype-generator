@@ -1,11 +1,12 @@
+import { vi } from 'vitest'
 import { input, select } from '@inquirer/prompts'
 import { promptQuestions } from '../lib/prompt-questions.js'
 import { getAllProjectTypes } from '../lib/project-definitions-api.js'
 
 // Mock @inquirer/prompts
-jest.mock('@inquirer/prompts', () => ({
-  input: jest.fn(),
-  select: jest.fn(),
+vi.mock('@inquirer/prompts', () => ({
+  input: vi.fn(),
+  select: vi.fn(),
 }))
 
 function mockInputs(inputs) {
@@ -19,7 +20,7 @@ function mockSelects(selects) {
 describe('promptQuestions', () => {
   beforeEach(async () => {
     // Clear all mocks before each test
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     // First call promptQuestions to set up the mocks f
     mockSelects(['basic', true, false])
