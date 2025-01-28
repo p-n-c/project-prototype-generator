@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Set the base directory
+BASE_DIR="lib/projects/typescript-basic"
+
+# Create the main project directory
+mkdir -p "$BASE_DIR"
+
+# Create the templates directory and its subdirectories
+mkdir -p "$BASE_DIR/templates/ts"
+mkdir -p "$BASE_DIR/templates/html"
+mkdir -p "$BASE_DIR/templates/css"
+mkdir -p "$BASE_DIR/templates/tests/unit/config"
+
+# Create empty files
+touch "$BASE_DIR/project-definition.js"
+touch "$BASE_DIR/templates/ts/index.ts"
+touch "$BASE_DIR/templates/html/index.html"
+touch "$BASE_DIR/templates/css/style.css"
+touch "$BASE_DIR/templates/tests/unit/index.test.ts"
+touch "$BASE_DIR/templates/tests/unit/config/jest.config.json"
+
+echo "Directory structure for TypeScript Basic project template has been created."
