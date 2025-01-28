@@ -1,35 +1,87 @@
+import { vi } from 'vitest'
 import fs from 'fs-extra'
 import { exec } from 'child_process'
 import path from 'path'
 import { FileOperations } from '../lib/file-operations.js'
-import { getProjectConfigByType } from '../lib/project-types-api.js'
+import { getProjectConfigByType } from '../lib/project-definitions-api.js'
 
 // Mock external dependencies fs-extra and child_process
-jest.mock('fs-extra')
-jest.mock('child_process', () => {
+vi.mock('fs-extra')
+vi.mock('child_process', () => {
   // Retain access to the real implementations of other functions e.g. spawn
-  const actualChildProcess = jest.requireActual('child_process')
+  const actualChildProcess = vi.importActual('child_process')
   return {
     ...actualChildProcess,
     // Mock the exec method explicitly. Implementation provided by
     // mockImplementation (custom implementation), or
     // mockReturnValue or mockResolvedValue (return a fixed value)
-    exec: jest.fn(),
+    exec: vi.fn(),
   }
 })
+
+const basicConfig = {
+  type: 'basic',
+  name: 'Web Basic',
+  description: 'Basic web project with modern tooling',
+  templates: {
+    html: 'index.html',
+  },
+  dependencies: {
+    base: {
+      eslint: 'latest',
+      prettier: 'latest',
+      stylelint: 'latest',
+      parcel: 'latest',
+      'stylelint-config-standard': 'latest',
+      globals: '^15.14.0',
+    },
+    test: {
+      unit: {
+        jest: 'latest',
+        'jest-environment-jsdom': 'latest',
+        '@babel/preset-env': 'latest',
+        '@testing-library/dom': 'latest',
+        '@testing-library/user-event': 'latest',
+      },
+      e2e: {
+        cypress: 'latest',
+      },
+    },
+  },
+  scripts: {
+    base: {
+      lint: 'eslint . && prettier --write . --log-level silent',
+      start: 'parcel && npm run static',
+    },
+    test: {
+      test: 'jest',
+      'test:watch': 'jest --watch',
+      'test:e2e': 'cypress open',
+      'test:e2e:headless': 'cypress run',
+    },
+  },
+  srcFolder: 'src',
+  source: 'index.html',
+}
+
+vi.mock('../lib/project-definitions-api.js')
+getProjectConfigByType.mockResolvedValue(basicConfig)
 
 describe('FileOperations', () => {
   let fileOps
   const projectRoot = '/test/project'
   const templateRoot = '/test/templates'
-  const basicConfig = getProjectConfigByType('basic')
 
   beforeEach(() => {
     // Clear all mocks before each test
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     // Create new FileOperations instance
-    fileOps = new FileOperations(projectRoot, templateRoot)
+    fileOps = new FileOperations(
+      projectRoot,
+      templateRoot,
+      getProjectConfigByType
+    )
 
     // Setup basic mock implementations
     fs.ensureDir.mockResolvedValue(undefined)
@@ -116,9 +168,7 @@ describe('FileOperations', () => {
 
   describe('error handling', () => {
     it('should handle file system errors appropriately', async () => {
-      const consoleSpy = jest
-        .spyOn(console, 'error')
-        .mockImplementation(() => {})
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       fs.ensureDir.mockRejectedValue(new Error('Directory creation failed'))
 
       await expect(
@@ -132,9 +182,7 @@ describe('FileOperations', () => {
     })
 
     it('should handle git initialisation errors', async () => {
-      const consoleSpy = jest
-        .spyOn(console, 'error')
-        .mockImplementation(() => {})
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       exec.mockImplementation((command, options, callback) => {
         callback(new Error('Git init failed'), null, null)
       })

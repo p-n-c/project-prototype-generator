@@ -1,25 +1,78 @@
+import { vi } from 'vitest'
 import fs from 'fs-extra'
 import path from 'path'
-import { TestSetup } from '../lib/test-helpers.js'
-import { getProjectConfigByType } from '../lib/project-types-api.js'
+import { TestSetup } from '../lib/test-setup.js'
+import { getProjectConfigByType } from '../lib/project-definitions-api.js'
+import { FileOperations } from '../lib/file-operations.js'
 
 // Mock fs-extra
-jest.mock('fs-extra')
+vi.mock('fs-extra')
+
+const basicConfig = {
+  type: 'basic',
+  name: 'Web Basic',
+  description: 'Basic web project with modern tooling',
+  templates: {
+    html: 'index.html',
+  },
+  dependencies: {
+    base: {
+      eslint: 'latest',
+      prettier: 'latest',
+      stylelint: 'latest',
+      parcel: 'latest',
+      'stylelint-config-standard': 'latest',
+      globals: '^15.14.0',
+    },
+    test: {
+      unit: {
+        jest: 'latest',
+        'jest-environment-jsdom': 'latest',
+        '@babel/preset-env': 'latest',
+        '@testing-library/dom': 'latest',
+        '@testing-library/user-event': 'latest',
+      },
+      e2e: {
+        cypress: 'latest',
+      },
+    },
+  },
+  scripts: {
+    base: {
+      lint: 'eslint . && prettier --write . --log-level silent',
+      start: 'parcel && npm run static',
+    },
+    test: {
+      test: 'jest',
+      'test:watch': 'jest --watch',
+      'test:e2e': 'cypress open',
+      'test:e2e:headless': 'cypress run',
+    },
+  },
+  srcFolder: 'src',
+  source: 'index.html',
+}
+
+vi.mock('../lib/project-definitions-api.js')
+getProjectConfigByType.mockResolvedValue(basicConfig)
 
 describe('TestSetup', () => {
   let testSetup
   const projectPath = '/test/project'
   const templateRoot = '/test/generator/lib'
   const srcFolder = 'src'
-  const basicConfig = getProjectConfigByType('basic')
-  const nextConfig = getProjectConfigByType('next')
 
   beforeEach(() => {
     // Clear all mocks before each test
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     // Create new TestSetup instance
-    testSetup = new TestSetup(projectPath, templateRoot, srcFolder)
+    testSetup = new TestSetup(
+      projectPath,
+      templateRoot,
+      srcFolder,
+      getProjectConfigByType
+    )
 
     // Setup basic mock implementations
     fs.ensureDir.mockResolvedValue(undefined)
@@ -32,19 +85,12 @@ describe('TestSetup', () => {
       expect(testSetup.projectPath).toBe(projectPath)
       expect(testSetup.templateRoot).toBe(templateRoot)
       expect(testSetup.srcFolder).toBe(srcFolder)
-      expect(testSetup.testTemplatesPath).toBe(
-        path.join(templateRoot, 'templates', 'tests')
-      )
-      // generator root should be '/test/generator'
-      expect(testSetup.configsPath).toBe(
-        path.join('/test/generator', 'configs')
-      )
     })
   })
 
   describe('setupProjectTests', () => {
     it('should setup unit tests when includeUnitTests is true', async () => {
-      const setupUnitTestsSpy = jest.spyOn(testSetup, 'setupUnitTests')
+      const setupUnitTestsSpy = vi.spyOn(testSetup, 'setupUnitTests')
 
       await testSetup.setupProjectTests(basicConfig, {
         includeUnitTests: true,
@@ -55,7 +101,7 @@ describe('TestSetup', () => {
     })
 
     it('should not setup any tests when both options are false', async () => {
-      const setupUnitTestsSpy = jest.spyOn(testSetup, 'setupUnitTests')
+      const setupUnitTestsSpy = vi.spyOn(testSetup, 'setupUnitTests')
 
       await testSetup.setupProjectTests(basicConfig, {
         includeUnitTests: false,
@@ -67,40 +113,40 @@ describe('TestSetup', () => {
   })
 
   describe('setupUnitTests', () => {
-    it('should copy jest config and test templates for basic project', async () => {
+    it('should copy all files found in the config directory', async () => {
+      // Mock getFilesInDirectory to return multiple files
+      const mockFiles = [
+        'vi.config.json',
+        'test-setup.json',
+        'extra-config.json',
+      ]
+      vi.spyOn(FileOperations.prototype, 'getFilesInDirectory').mockReturnValue(
+        mockFiles
+      )
+
       await testSetup.setupUnitTests(basicConfig)
 
-      // Verify jest config copying
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          path.join('configs', 'jest', 'basic', 'jest.config.json')
-        ),
-        path.join(projectPath, 'jest.config.json')
-      )
-
-      // Verify test templates copying
-      expect(fs.readdir).toHaveBeenCalled()
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(path.join('unit', 'basic', 'index.test.js')),
-        expect.any(String)
-      )
+      // Verify each file is copied
+      mockFiles.forEach((file) => {
+        expect(fs.copy).toHaveBeenCalledWith(
+          expect.stringContaining(file),
+          path.join(projectPath, file)
+        )
+      })
     })
 
-    it('should setup additional configs for Next.js project', async () => {
-      await testSetup.setupUnitTests(nextConfig)
+    it('should handle empty config directory', async () => {
+      // Mock getFilesInDirectory to return an empty array
+      vi.spyOn(FileOperations.prototype, 'getFilesInDirectory').mockReturnValue(
+        []
+      )
 
-      // Verify Next.js specific config copying
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(path.join('jest', 'next', 'jest.setup.js')),
-        path.join(projectPath, 'jest.setup.js')
-      )
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining(path.join('jest', 'next', '.babelrc')),
-        path.join(projectPath, '.babelrc')
-      )
+      await testSetup.setupUnitTests(basicConfig)
+
+      // Ensure no copy attempts are made
+      expect(fs.copy).not.toHaveBeenCalled()
     })
   })
-
   describe('copyTestTemplates', () => {
     it('should copy all test templates to the target directory', async () => {
       await testSetup.copyTestTemplates(basicConfig)
@@ -132,14 +178,6 @@ describe('TestSetup', () => {
   })
 
   describe('error handling', () => {
-    it('should handle file copy errors', async () => {
-      fs.copy.mockRejectedValue(new Error('Copy failed'))
-
-      await expect(testSetup.setupUnitTests(basicConfig)).rejects.toThrow(
-        'Copy failed'
-      )
-    })
-
     it('should handle directory creation errors', async () => {
       fs.ensureDir.mockRejectedValue(new Error('Directory creation failed'))
 

@@ -3,7 +3,7 @@ import {
   getProjectConfigByType,
   getProjectDependencies,
   getProjectScripts,
-} from '../lib/project-types-api.js'
+} from '../lib/project-definitions-api.js'
 
 describe('Project Types Configuration', () => {
   describe('getAllProjectTypes', () => {
