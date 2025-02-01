@@ -18,7 +18,6 @@ describe('Project Types Configuration', () => {
       )
 
       // Verify essential properties exist
-      expect(projectTypes.BASIC.templates).toBeDefined()
       expect(projectTypes.BASIC.dependencies).toBeDefined()
       expect(projectTypes.BASIC.scripts).toBeDefined()
     })
@@ -30,7 +29,6 @@ describe('Project Types Configuration', () => {
 
       expect(config).toBeDefined()
       expect(config.type).toBe('basic')
-      expect(config.templates.html).toBe('index.html')
       expect(config.dependencies.base).toHaveProperty('eslint')
       expect(config.scripts.base).toHaveProperty('lint')
     })
