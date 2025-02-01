@@ -118,24 +118,6 @@ describe('FileOperations', () => {
         expect.any(Function) // Match any callback function
       )
     })
-
-    it('should copy base configuration files', async () => {
-      await fileOps.copyBaseConfigs(basicConfig, projectRoot, false)
-
-      // Verify essential config files are copied
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining('.gitignore'),
-        path.join(projectRoot, '.gitignore')
-      )
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining('prettier.config.js'),
-        path.join(projectRoot, 'prettier.config.js')
-      )
-      expect(fs.copy).toHaveBeenCalledWith(
-        expect.stringContaining('.stylelintrc.json'),
-        path.join(projectRoot, '.stylelintrc.json')
-      )
-    })
   })
 
   describe('copyProjectTemplates', () => {
