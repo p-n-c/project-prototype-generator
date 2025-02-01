@@ -5,45 +5,44 @@ This document explains how to add a new project to the web project generator.
 To create a new project you need to:
 
 1. Create a project directory under `lib/projects`
-2. Add a project definition file with properties that match the project directory structure
-3. Add templates and configuration files
+2. Add templates and configuration files to the project directory
+3. Add a project definition file with package.json dependencies, scripts, etc. to the project directory
 
-When you run the generator, your project definition will get picked up and added to the existing projects.
+When you run the generator, your project configuration will get picked up and added to the existing projects.
 
 ## Step-by-Step Guide
 
 ### 1. The Project Directory
 
 1. Create a new directory under `projects` with the name of your project. All files specific to your project will go under this.  
-   Add files in folders of your choice e.g. `html`, `css`, `jsx` e.g. `templates/basic/html/index.html`.
+   When you run the generator, the files in your directory will be mapped to the directory structure in your new project.
 
-   ```text
-   projects/
-   └── basic/                               -- required name
-    ├── templates/                          -- required name
-    │   ├── html/
-    │   │   └── index.html
-    │   └── tests/                          -- required name
-    │       └── unit/                       -- required name
-    │           ├── index.test.js
-    │           └── config/                 -- required name
-    │               └── jest.config.json
-    └── project-definition.js               -- required name
-   ```
+   Config files will be mapped to the project root.  
+   The templates structure will be copied as-is e.g. in the example below, `index.html` will appear under `src`.
 
-This file structure is reflected in the `project-definition.js` file e.g.
-
-```json
-{
-  "templates": {
-    "html": "index.html"
-  }
-}
+```text
+people-and-code/
+├── configs/
+│   ├── .vscode/
+│   │   └── settings.json
+│   ├── .gitignore
+│   ├── .stylelintrc.json
+│   ├── eslint.config.js
+│   └── prettier.config.js
+├── templates/
+│   └── src/
+│       ├── index.html
+│       ├── robots.txt
+│       ├── sitemap.html
+│       └── style.css
+└── tests/
+    └── unit/
+        ├── config/
+        │   └── index.test.js
+        └── project-definition.js
 ```
 
-The relationship between the project definition and the directory structure is by convention but it will be checked in the unit tests.
-
-1. Add template files with variables using `{{variableName}}` syntax
+2. Use `{{variableName}}` syntax to add dynamic values such as the `projectTitle` chosen when creating a new instance of a project.
 
 ```html
 <!doctype html>
@@ -56,28 +55,20 @@ The relationship between the project definition and the directory structure is b
 </html>
 ```
 
-Variables will be replaced by project-specific values before the file is copied to the new project.
+Variables will be replaced by project-specific values - entered at the command line during set up - before the file is copied to the new project.
 
 ### 2. The Project Definition File
 
-Your project definition file will get picked up when the generator runs, and your project will be added to list of project types from which people can select.
+Your project definition file will get picked up when the generator runs, and used to create the `package.json`.
 
 ```javascript
 YOUR_PROJECT_TYPE: {
     type: 'your_project_type',      // Unique identifier
     name: 'Display Name',           // User-friendly name
     description: 'Description',     // Shown in project selection
-    templates: {
-        html: 'index.html',         // Main template files
-        css: ['style.css'],         // Array for multiple files
-        jsx: [],                    // Optional extra files e.g. page.jsx
-    },
     dependencies: {
         base: {
             // Core dependencies
-            eslint: 'latest',
-            prettier: 'latest',
-            // ...other dependencies
         },
         test: {
             unit: {
@@ -90,7 +81,7 @@ YOUR_PROJECT_TYPE: {
     },
     scripts: {
         base: {
-            // Core npm scripts
+            // Recommended core npm scripts
             lint: "eslint . && prettier --write . && stylelint '**/*.{css,scss}'",
             start: 'parcel && npm run static',
         },
@@ -103,29 +94,25 @@ YOUR_PROJECT_TYPE: {
 
 ### 3. Add Test Configurations (Optional)
 
-If your project type supports testing:
+If your project type supports unit testing:
 
-1. Add Jest configuration in `configs/jest/your_project_type/`:
+1. Add Jest configuration in `tests/unit/` and `tests/unit/configs/`:
 
    ```text
-   configs/
-   └── jest/
-       └── your_project_type/
-           ├── jest.config.json
-           └── jest.setup.js (if needed)
+   tests/
+    └── unit/
+        ├── config/
+        │   └── index.test.js
+        └── project-definition.js
    ```
 
-2. Add test templates in `templates/tests/unit/your_project_type/`
+2. Check that your tests have the required dependencies and scripts in the `project-definition`.
 
 ## Available Template Variables
 
 - `{{projectTitle}}`: Project title from user input
 - `{{projectDescription}}`: Project description from user input
 - `{{currentYear}}`: Current year (auto-populated)
-
-### Tips and Hints
-
-- If you don't want eslint configuration, add an ignore command e.g. `ignores: ['eslint']`. Next.js, for example, incorporates setup for eslint.
 
 ## Validation
 
