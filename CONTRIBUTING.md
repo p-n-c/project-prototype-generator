@@ -1,5 +1,20 @@
 # Adding New Project Types
 
+## Table of Contents
+
+- [Adding New Project Types](#adding-new-project-types)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Step-by-Step Guide](#step-by-step-guide)
+    - [1. The Project Directory](#1-the-project-directory)
+    - [2. Template Variables](#2-template-variables)
+    - [3. The Project Definition File](#3-the-project-definition-file)
+    - [4. Test Configurations (Optional)](#4-test-configurations-optional)
+  - [Available Template Variables](#available-template-variables)
+  - [Validation](#validation)
+
+## Overview
+
 This document explains how to add a new project to the web project generator.
 
 To create a new project you need to:
@@ -14,11 +29,11 @@ When you run the generator, your project configuration will get picked up and ad
 
 ### 1. The Project Directory
 
-1. Create a new directory under `projects` with the name of your project. All files specific to your project will go under this.  
-   When you run the generator, the files in your directory will be mapped to the directory structure in your new project.
+Create a new directory under `projects` with the name of your project. All files specific to your project will go under this.  
+When you run the generator, the files in your directory will be mapped to the directory structure in your new project.
 
-   Config files will be mapped to the project root.  
-   The templates structure will be copied as-is e.g. in the example below, `index.html` will appear under `src`.
+Config files will be mapped to the project root.  
+The templates structure will be copied as-is e.g. in the example below, `index.html` will appear under `src`.
 
 ```text
 people-and-code/
@@ -42,7 +57,9 @@ people-and-code/
         └── project-definition.js
 ```
 
-2. Use `{{variableName}}` syntax to add dynamic values such as the `projectTitle` chosen when creating a new instance of a project.
+### 2. Template Variables
+
+Use `{{variableName}}` syntax to add dynamic values such as the `projectTitle` chosen when creating a new instance of a project.
 
 ```html
 <!doctype html>
@@ -57,9 +74,9 @@ people-and-code/
 
 Variables will be replaced by project-specific values - entered at the command line during set up - before the file is copied to the new project.
 
-### 2. The Project Definition File
+### 3. The Project Definition File
 
-Your project definition file will get picked up when the generator runs, and used to create the `package.json`.
+Create a project definition file in your project's root directory. This file will be used to generate the `package.json` when the generator runs.
 
 ```javascript
 YOUR_PROJECT_TYPE: {
@@ -92,7 +109,7 @@ YOUR_PROJECT_TYPE: {
 }
 ```
 
-### 3. Add Test Configurations (Optional)
+### 4. Test Configurations (Optional)
 
 If your project type supports unit testing:
 
@@ -100,15 +117,17 @@ If your project type supports unit testing:
 
    ```text
    tests/
-    └── unit/
-        ├── config/
-        │   └── index.test.js
-        └── project-definition.js
+   └── unit/
+   ├── config/
+   │   └── jest.config.json
+   └── index.test.ts
    ```
 
 2. Check that your tests have the required dependencies and scripts in the `project-definition`.
 
 ## Available Template Variables
+
+The following variables can be used in your templates:
 
 - `{{projectTitle}}`: Project title from user input
 - `{{projectDescription}}`: Project description from user input
@@ -116,13 +135,18 @@ If your project type supports unit testing:
 
 ## Validation
 
-You can run a basic validation of your project configuration.
+You can validate your project configuration using the validation script located in the `validation` directory.
 
-You can validate a single config by passing in the config type as an argument e.g. `basic` or with no arguments to validate all configs.
+To validate a single config, pass in the config type as an argument:
 
 ```shell
 node validation/validate-config.js basic
+```
+
+To validate all configs, run without arguments:
+
+```shell
 node validation/validate-config.js
 ```
 
-Validation checks that all required fields are present.
+The validation process checks that all required fields are present in your configuration.
