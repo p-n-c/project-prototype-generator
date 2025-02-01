@@ -1,5 +1,6 @@
 import globals from 'globals'
 import js from '@eslint/js'
+import vitest from '@vitest/eslint-plugin'
 
 export default [
   js.configs.recommended,
@@ -12,6 +13,9 @@ export default [
       globals: {
         ...globals.browser,
       },
+    },
+    plugins: {
+      vitest,
     },
   },
   {
