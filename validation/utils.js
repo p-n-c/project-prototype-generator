@@ -25,3 +25,6 @@ export const namePattern = /^(?!-)(?!.*--)[a-z]+(-[a-z]+)*(?<!-)$/
 // Pattern to match top ten most common source folder names (src, app, source, frontend, client, public, assets, www, dist, ui)
 export const srcFolderPattern =
   /^(src|app|source|frontend|client|public|assets|www|dist|ui)$/
+
+// Regular expression to match either "module" or "commonjs"
+export const moduleTypePattern = /^(module|commonjs)$/

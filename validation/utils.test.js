@@ -1,4 +1,9 @@
-import { sourcePattern, namePattern, srcFolderPattern } from './utils.js'
+import {
+  sourcePattern,
+  namePattern,
+  srcFolderPattern,
+  moduleTypePattern,
+} from './utils.js'
 
 describe('sourcePattern', () => {
   const validCases = [
@@ -110,6 +115,34 @@ describe('source folder name validation', () => {
     'should reject invalid folder name: %s',
     (folderName) => {
       expect(srcFolderPattern.test(folderName)).toBe(false)
+    }
+  )
+})
+
+describe('moduleTypePattern', () => {
+  const validCases = ['module', 'commonjs']
+
+  const invalidCases = [
+    'Module', // uppercase not allowed
+    'CommonJS', // uppercase not allowed
+    '', // empty string not allowed
+    'other', // invalid value
+    'module ', // trailing space not allowed
+    ' module', // leading space not allowed
+    'common-js', // hyphenated version not allowed
+    'esmodule', // partial match not allowed
+    null, // null not allowed
+    undefined, // undefined not allowed
+  ]
+
+  test.each(validCases)('should match valid module type: %s', (type) => {
+    expect(moduleTypePattern.test(type)).toBe(true)
+  })
+
+  test.each(invalidCases)(
+    'should not match invalid module type: %s',
+    (type) => {
+      expect(moduleTypePattern.test(type)).toBe(false)
     }
   )
 })

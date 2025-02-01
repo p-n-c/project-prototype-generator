@@ -1,4 +1,9 @@
-import { sourcePattern, namePattern, srcFolderPattern } from './utils.js'
+import {
+  sourcePattern,
+  namePattern,
+  srcFolderPattern,
+  moduleTypePattern,
+} from './utils.js'
 
 export const projectConfigSchema = {
   type: {
@@ -132,5 +137,11 @@ export const projectConfigSchema = {
     required: true,
     pattern: srcFolderPattern,
     description: 'The entry point for the application',
+  },
+  moduleType: {
+    type: 'string',
+    required: true,
+    pattern: moduleTypePattern,
+    description: 'Either "module" or "commonjs"',
   },
 }
