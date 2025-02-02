@@ -1,5 +1,5 @@
 // Pattern to match filenames like index.jsx, page.html, etc.
-export const sourcePattern = /^(?!-)[a-z]+(?:-[a-z]+)*\.(jsx|html|[a-z]+)$/
+export const sourcePattern = /^(?:(?!-)[a-z]+(?:-[a-z]+)*\.(jsx|html|[a-z]+))?$/
 
 // This pattern breaks down as:
 
@@ -24,7 +24,7 @@ export const namePattern = /^(?!-)(?!.*--)[a-z]+(-[a-z]+)*(?<!-)$/
 
 // Pattern to match top ten most common source folder names (src, app, source, frontend, client, public, assets, www, dist, ui)
 export const srcFolderPattern =
-  /^(src|app|source|frontend|client|public|assets|www|dist|ui)$/
+  /^(src|app|source|frontend|client|public|assets|www|dist|ui||)$/
 
 // Regular expression to match either "module" or "commonjs"
 export const moduleTypePattern = /^(module|commonjs)$/

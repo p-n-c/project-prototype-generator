@@ -93,6 +93,7 @@ describe('source folder name validation', () => {
     'www',
     'dist',
     'ui',
+    '', // Empty string (accepted because sometimes e.g. Nuxt.js there is no single point of entry)
   ]
 
   const invalidCases = [
@@ -101,7 +102,6 @@ describe('source folder name validation', () => {
     'source-folder', // Extra characters not allowed
     'frontend123', // Numbers not allowed
     'public_assets', // Underscore not allowed
-    '', // Empty string
     'client.app', // Dot not allowed
     'dist/', // Slash not allowed
     'main', // Not in the list
