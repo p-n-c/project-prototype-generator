@@ -26,8 +26,10 @@ Select the type of project you want to create.
 What type of project would you like to create? (Use arrow keys)
 ❯ Web Basic
   Next.js Web App
+  Nuxt.js Web App
   Web Article
   People & Code Website
+  TypeScript Basic
 ```
 
 #### Project SetUp
@@ -41,7 +43,6 @@ Complete a short setup.
 ✔ Project title: Proof of Concept
 ✔ Project description: Demo project for testing a new idea
 ✔ Project author: People and Code
-✔ Source folder name: src
 ✔ Include unit tests? Yes
 ? Include E2E tests? (Use arrow keys)
 ❯ Yes
