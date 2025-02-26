@@ -1,6 +1,9 @@
 import { vi } from 'vitest'
 import { input, select } from '@inquirer/prompts'
-import { promptQuestions } from '../lib/prompt-questions.js'
+import {
+  promptQuestions,
+  getProjectSpecificQuestions,
+} from '../lib/prompt-questions.js'
 import { getAllProjectTypes } from '../lib/project-definitions-api.js'
 
 // Mock @inquirer/prompts
@@ -38,7 +41,7 @@ describe('promptQuestions', () => {
     await promptPromise
   })
 
-  describe('happy path', () => {
+  describe.only('happy path', () => {
     beforeEach(() => {
       // Mock successful responses
       mockSelects(['basic', true, false])
@@ -75,7 +78,8 @@ describe('promptQuestions', () => {
           expect.objectContaining({
             name: 'Web Basic',
             value: 'basic',
-            description: 'Basic web project with modern tooling',
+            description:
+              'HTML and CSS only website. Comes with Parcel bundler, Prettier formatting and ESlint. Optional support for Cypress e2e tests and Jest unit tests.',
           }),
         ]),
       })

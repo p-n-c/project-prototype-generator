@@ -14,7 +14,7 @@ describe('Project Types Configuration', () => {
       expect(projectTypes.BASIC.type).toBe('basic')
       expect(projectTypes.BASIC.name).toBe('Web Basic')
       expect(projectTypes.BASIC.description).toBe(
-        'Basic web project with modern tooling'
+        'HTML and CSS only website. Comes with Parcel bundler, Prettier formatting and ESlint. Optional support for Cypress e2e tests and Jest unit tests.'
       )
 
       // Verify essential properties exist
