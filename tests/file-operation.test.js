@@ -22,7 +22,8 @@ vi.mock('child_process', () => {
 const basicConfig = {
   type: 'basic',
   name: 'Web Basic',
-  description: 'Basic web project with modern tooling',
+  description:
+    'HTML and CSS only website. Comes with Parcel bundler, Prettier formatting and ESlint. Optional support for Cypress e2e tests and Jest unit tests.',
   templates: {
     html: 'index.html',
   },

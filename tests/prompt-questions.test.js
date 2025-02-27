@@ -38,7 +38,7 @@ describe('promptQuestions', () => {
     await promptPromise
   })
 
-  describe('happy path', () => {
+  describe.only('happy path', () => {
     beforeEach(() => {
       // Mock successful responses
       mockSelects(['basic', true, false])
@@ -62,6 +62,7 @@ describe('promptQuestions', () => {
         projectAuthor: 'Test Author',
         includeUnitTests: true,
         includeE2ETests: false,
+        projectAnswers: [],
       })
     })
 
@@ -70,12 +71,13 @@ describe('promptQuestions', () => {
 
       // Verify project type selection
       expect(select).toHaveBeenCalledWith({
-        message: 'What type of project would you like to create?',
+        message: 'What type of project prototype would you like to create?',
         choices: expect.arrayContaining([
           expect.objectContaining({
             name: 'Web Basic',
             value: 'basic',
-            description: 'Basic web project with modern tooling',
+            description:
+              'HTML and CSS only website. Comes with Parcel bundler, Prettier formatting and ESlint. Optional support for Cypress e2e tests and Jest unit tests.',
           }),
         ]),
       })

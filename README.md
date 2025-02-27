@@ -23,7 +23,7 @@ Type `create-web-project` and follow the instructions.
 Select the type of project you want to create.
 
 ```shell
-What type of project would you like to create? (Use arrow keys)
+What type of project prototype would you like to create? (Use arrow keys)
 ❯ Web Basic
   Next.js Web App
   Nuxt.js Web App
@@ -38,7 +38,7 @@ Complete a short setup.
 
 ```shell
 ➜  temp-code create-web-project
-✔ What type of project would you like to create? Web Basic
+✔ What type of project prototype would you like to create? Web Basic
 ✔ Project name: proof-of-concept
 ✔ Project title: Proof of Concept
 ✔ Project description: Demo project for testing a new idea
