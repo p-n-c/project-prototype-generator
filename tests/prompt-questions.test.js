@@ -71,7 +71,7 @@ describe('promptQuestions', () => {
 
       // Verify project type selection
       expect(select).toHaveBeenCalledWith({
-        message: 'What type of project would you like to create?',
+        message: 'What type of project prototype would you like to create?',
         choices: expect.arrayContaining([
           expect.objectContaining({
             name: 'Web Basic',
