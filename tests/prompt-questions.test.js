@@ -1,9 +1,6 @@
 import { vi } from 'vitest'
 import { input, select } from '@inquirer/prompts'
-import {
-  promptQuestions,
-  getProjectSpecificQuestions,
-} from '../lib/prompt-questions.js'
+import { promptQuestions } from '../lib/prompt-questions.js'
 import { getAllProjectTypes } from '../lib/project-definitions-api.js'
 
 // Mock @inquirer/prompts
@@ -65,6 +62,7 @@ describe('promptQuestions', () => {
         projectAuthor: 'Test Author',
         includeUnitTests: true,
         includeE2ETests: false,
+        projectAnswers: [],
       })
     })
 
