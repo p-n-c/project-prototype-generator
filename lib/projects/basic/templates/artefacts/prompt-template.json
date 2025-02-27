@@ -25,7 +25,8 @@
       "generateSnapshotOnRequest": true,
       "proceedMethodically": true,
       "confirmBeforeAdvancing": true,
-      "explainOneConceptAtATime": true
+      "explainOneConceptAtATime": true,
+      "confirmDependenciesBeforeAdding": true
     },
     "terms": {
       "promptTemplate": {
