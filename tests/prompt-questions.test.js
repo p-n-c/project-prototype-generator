@@ -62,7 +62,6 @@ describe('promptQuestions', () => {
         projectAuthor: 'Test Author',
         includeUnitTests: true,
         includeE2ETests: false,
-        projectAnswers: [],
       })
     })
 

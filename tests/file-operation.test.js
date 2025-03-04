@@ -87,7 +87,23 @@ describe('FileOperations', () => {
     // Setup basic mock implementations
     fs.ensureDir.mockResolvedValue(undefined)
     fs.copy.mockResolvedValue(undefined)
-    fs.readFile.mockResolvedValue('template content')
+    fs.readFile.mockResolvedValue(
+      JSON.stringify({
+        thread: {
+          promptTemplate: {
+            project: {
+              title: '',
+              description: '',
+              definition: 'Project details go here…',
+            },
+            prototype: {
+              type: '',
+              typeDefinition: '',
+            },
+          },
+        },
+      })
+    )
     fs.outputFile.mockResolvedValue(undefined)
     // Implement the signature of the callback from exec function:
     // exec(command, options, callback)
@@ -103,6 +119,7 @@ describe('FileOperations', () => {
       includeE2ETests: false,
       projectTitle: 'Test Project',
       projectDescription: 'A test project',
+      prototype: 'Throwaway',
     }
 
     it('should create basic project structure', async () => {
@@ -127,6 +144,7 @@ describe('FileOperations', () => {
         srcFolder: 'src',
         projectTitle: 'Test Project',
         projectDescription: 'A test project',
+        prototype: 'Throwaway',
       }
 
       await fileOps.copyProjectTemplates(basicConfig, projectRoot, options)
@@ -138,6 +156,7 @@ describe('FileOperations', () => {
       const variables = {
         projectTitle: 'Test Project',
         projectDescription: 'A test project',
+        prototype: 'Throwaway',
       }
 
       const result = fileOps.processTemplateVariables(template, variables)
