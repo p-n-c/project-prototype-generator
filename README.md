@@ -16,7 +16,7 @@ This will give you global access to the web project generator.
 
 Open a terminal and navigate to where you want to locate your project.
 
-Type `create-web-project` and follow the instructions.
+Type `create-prototype` and follow the instructions.
 
 #### Project selection
 
@@ -37,7 +37,7 @@ What type of project prototype would you like to create? (Use arrow keys)
 Complete a short setup.
 
 ```shell
-➜  temp-code create-web-project
+➜  temp-code create-prototype
 ✔ What type of project prototype would you like to create? Web Basic
 ✔ Project name: proof-of-concept
 ✔ Project title: Proof of Concept
