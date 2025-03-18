@@ -1,4 +1,4 @@
-# Web Project Generator
+# Project prototype generator
 
 A tool for creating simple websites quickly from [People and Code](https://people-and-code.com/).
 
@@ -8,9 +8,9 @@ A tool for creating simple websites quickly from [People and Code](https://peopl
 
 To run the generator, clone it.
 
-Open a terminal window in the `web-project-generator` directory and run `npm link`.
+Open a terminal window in the `create-prototype` directory and run `npm link`.
 
-This will give you global access to the web project generator.
+This will give you global access to the project prototype generator.
 
 ### Generate a New Web Project
 
@@ -96,4 +96,4 @@ If you are running e2e tests, Cypress will create several files during setup, in
 
 ## New Project Configurations
 
-To add a new configuration, please refer to the [CONTRIBUTING.md](https://github.com/p-n-c/web-project-generator/blob/main/CONTRIBUTING.md)
+To add a new configuration, please refer to the [CONTRIBUTING.md](https://github.com/p-n-c/project-prototype-generator/blob/main/CONTRIBUTING.md)

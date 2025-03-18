@@ -15,7 +15,7 @@
 
 ## Overview
 
-This document explains how to add a new project to the web project generator.
+This document explains how to add a new project to the project prototype generator.
 
 To create a new project you need to:
 
