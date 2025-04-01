@@ -119,7 +119,25 @@ describe('FileOperations', () => {
       includeE2ETests: false,
       projectTitle: 'Test Project',
       projectDescription: 'A test project',
-      prototype: 'Throwaway',
+      prototype: 'Conceptual',
+      prototypes: [
+        {
+          name: 'Conceptual',
+          value: 'Conceptual',
+          description: 'Explores and validates initial ideas and approaches',
+          humanPrompts: [
+            'Who am I doing this for? Myself, my team, the company, clients?',
+            'Do I have a clear objective?',
+            'Are there limiting factors? These might include scope, time or resources.',
+            'Does it depend on research? If so, have I supplied it.',
+            'Is the concept limited to one domain or field such as business, interoperability or use experience?',
+            'What problem am I trying to solve?',
+            'Are there existing solutions I can learn from?',
+            'What would success look like for this project?',
+            'What assumptions am I making that should be validated?',
+          ],
+        },
+      ],
     }
 
     it('should create basic project structure', async () => {
@@ -144,7 +162,7 @@ describe('FileOperations', () => {
         srcFolder: 'src',
         projectTitle: 'Test Project',
         projectDescription: 'A test project',
-        prototype: 'Throwaway',
+        prototype: 'Conceptual',
       }
 
       await fileOps.copyProjectTemplates(basicConfig, projectRoot, options)
@@ -156,7 +174,7 @@ describe('FileOperations', () => {
       const variables = {
         projectTitle: 'Test Project',
         projectDescription: 'A test project',
-        prototype: 'Throwaway',
+        prototype: 'Conceptual',
       }
 
       const result = fileOps.processTemplateVariables(template, variables)
