@@ -1,8 +1,8 @@
 import './global.css'
 
 export const metadata = {
-  title: 'projectTitle',
-  description: 'projectDescription',
+  title: '{{projectTitle}}',
+  description: '{{projectDescription}}',
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
